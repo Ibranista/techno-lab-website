@@ -13,14 +13,40 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
+  /* :root {
     --background: #0a0a0a;
     --foreground: #ededed;
-  }
+  } */
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@theme {
+  /* Base Colors */
+  --color-base-25: #00000040;
+  --color-base-50: #FFFFFF80;
+  --color-base-70: #FFFFFFB2;
+  /* Secondary Colors */
+  --color-secondary-main: #E46CAA;
+}
+
+@layer utilities {
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  .basic-container {
+    @apply px-0 lg:px-0 py-0;
+  }
+
+  .shadow-custom {
+    box-shadow: 4px 4px 0 #2F2F81;
+  }
+
+  .dark-text {
+    @apply dark:text-[#fafafa];
+  }
+
+  .dark-btn {
+    @apply dark:border-[#44447a] dark:hover:bg-[#2F2F81] dark:hover:text-[#fff] dark:hover:border-[#fff];
+  }
 }
