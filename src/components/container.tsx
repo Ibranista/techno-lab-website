@@ -7,16 +7,22 @@ type ContainerProps<T extends React.ElementType> = {
   children?: React.ReactNode;
 } & React.ComponentPropsWithoutRef<T>;
 
-export function Container<T extends React.ElementType = "div">({
-  as,
-  className,
-  children,
-  ...props
-}: ContainerProps<T>) {
-  const Component = as || "div";
-  return (
-    <Component className={cn("px-7 lg:px-[72px]", className)} {...props}>
-      {children}
-    </Component>
-  );
-}
+export const Container = React.forwardRef(
+  <T extends React.ElementType = "div">(
+    { as, className, children, ...props }: ContainerProps<T>,
+    ref: React.Ref<never>
+  ) => {
+    const Component = as || "div";
+    return (
+      <Component
+        ref={ref}
+        className={cn("px-7 lg:px-[72px]", className)}
+        {...props}
+      >
+        {children}
+      </Component>
+    );
+  }
+);
+
+Container.displayName = "Container";
