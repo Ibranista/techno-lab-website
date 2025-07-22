@@ -5,6 +5,7 @@ import { HeroSection } from "@/components/ui/heroSection";
 import { Container } from "@/components/container";
 import Head from "next/head";
 import { ServicesSection } from "@/components/ui/servicesSection";
+import FeatureHome from "@/components/ui/featureHome";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -32,6 +33,7 @@ export default function RootLayout({
           <HeroSection />
         </Container>
         <ServicesSection />
+        <FeatureHome />
       </body>
     </html>
   );
