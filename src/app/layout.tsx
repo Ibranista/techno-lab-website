@@ -4,6 +4,7 @@ import Navbar from "@/components/ui/navbar";
 import { HeroSection } from "@/components/ui/heroSection";
 import { Container } from "@/components/container";
 import Head from "next/head";
+import { ServicesSection } from "@/components/ui/servicesSection";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -30,6 +31,7 @@ export default function RootLayout({
           <Navbar />
           <HeroSection />
         </Container>
+        <ServicesSection />
       </body>
     </html>
   );
