@@ -5,6 +5,16 @@
   --foreground: #171717;
 }
 
+:root {
+  --border-opacity: 0;
+  /* Initially transparent */
+}
+
+.hover\:border-visible:hover {
+  --border-opacity: 1;
+  /* Fully visible on hover */
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -28,6 +38,13 @@
   /* Secondary Colors */
   --color-secondary-main: #E46CAA;
 }
+
+@property --border-angle {
+  inherits: false;
+  initial-value: 0deg;
+  syntax: '<angle>';
+}
+
 
 @layer utilities {
 
@@ -55,6 +72,17 @@
     @apply dark:border-[#44447a] dark:hover:bg-[#2F2F81] dark:hover:text-[#fff] dark:hover:border-[#fff];
   }
 
+  .primary {
+    @apply text-[#260464]
+  }
+
+  .btn-gradient {
+    background: linear-gradient(180.64deg, #E46CAA 10.89%, #8334B6 99.45%);
+  }
+
+  .cards-gradient {
+    background: linear-gradient(115.47deg, rgba(217, 217, 217, 0.12) 0.57%, rgba(115, 115, 115, 0.12) 99.43%);
+  }
 
   /* gradients */
 
@@ -80,5 +108,61 @@
     text-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
   }
 
+  .rocket-bg {
+    background: linear-gradient(180.64deg, #E46CAA 10.89%, #8334B6 99.45%);
+    opacity: 0;
+    transform: rotate(-30deg);
+    opacity: 0.5;
+    filter: blur(37px);
+    transition: all 0.5s ease 0.15s;
+  }
+
+  .group:hover .rocket-bg {
+    opacity: 0.5;
+  }
+
+  .group:hover {
+    animation: rotate 6s linear infinite;
+  }
+
+  .animate-border {
+    animation: border-rotate 5s linear infinite;
+  }
+
+  @keyframes rotate {
+    to {
+      --border-angle: 360deg;
+    }
+  }
+
+
+  .welcome-border-gradient {
+    border: 3px solid transparent;
+    /* 300px arc: 300/ (2 * PI * r) * 360deg, for r ~ 100px, arc ~ 172deg */
+    background: conic-gradient(from var(--border-angle, 0deg), #e46caa 0deg, #ff9800 172deg, transparent 172deg, transparent 360deg);
+    opacity: 0;
+    pointer-events: none;
+    border-radius: 0.75rem;
+    transition: opacity 0.5s;
+    --border-angle: 0deg;
+    animation: border-rotate 2s linear infinite;
+  }
+
+  .group:hover .welcome-border-gradient {
+    opacity: 1;
+  }
+
+  @keyframes border-rotate {
+    to {
+      --border-angle: 360deg;
+    }
+  }
 
 }
+
+/* Vector */
+/* Rectangle 1 */
+
+/* Rectangle 1 */
+
+/* Card.css */

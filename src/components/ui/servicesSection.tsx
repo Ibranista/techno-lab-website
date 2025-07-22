@@ -1,0 +1,174 @@
+import { services_content } from "@/content/services.content";
+import { Container } from "../container";
+import { Typography } from "../Typography";
+import Link from "next/link";
+import Image from "next/image";
+// icon from the public directory
+import icon from "@/../public/services/arrow-right.svg";
+import hoveredRocket from "@/../public/services/hovered-rocket.png";
+import rocketBg from "@/../public/services/services-bg-vector.svg";
+
+export const ServicesSection = () => {
+  return (
+    <Container className="flex flex-col gap-y-[36.33px] h-screen pt-[87px] pb-[86px]">
+      <article>
+        <Typography type="title" size="large" className="hero-title-gradient">
+          {services_content.title}
+        </Typography>
+        <Container
+          as="article"
+          className="px-0 py-0 lg:px-0 flex justify-between"
+        >
+          <Typography
+            type="sub"
+            size="sub-desc"
+            className="text-base-70 max-w-[415px]"
+          >
+            {services_content.desc}
+          </Typography>
+          <Link
+            href="#"
+            className="pl-[30px] inline-flex items-center gap-x-[19.97px] overflow-hidden rounded-full bg-white border border-white"
+          >
+            <Typography
+              type="sub"
+              size="small"
+              className="py-3 text-sm font-semibold primary"
+            >
+              {services_content.btn_name}
+            </Typography>
+            <span className="flex h-10 w-10 items-center justify-center rounded-full btn-gradient">
+              <Image src={icon.src} alt="arrow" width={16} height={16} />
+            </span>
+          </Link>
+        </Container>
+      </article>
+      <Container
+        as="article"
+        className="px-0 lg:px-0 py-0 grid max-md:flex max-md:flex-wrap lg:flex-nowrap lg:grid-cols-3 gap-[28px]"
+      >
+        {services_content.services_list.map((service, index) => (
+          <Container
+            key={index}
+            className="cursor-pointer relative group w-full min-h-[253px] rounded-[19px] py-9 flex flex-col items-center justify-center text-center gap-y-2 overflow-hidden border border-transparent"
+            style={{ "--border-angle": "0deg" } as React.CSSProperties}
+          >
+            {/* Animated border overlay */}
+            <div
+              className="absolute inset-0 rounded-[19px] pointer-events-none transition-opacity duration-500 opacity-0 group-hover:opacity-100 animate-border"
+              style={
+                {
+                  background:
+                    "conic-gradient(from var(--border-angle), #E46CAA 0deg, #8334B6 45deg, #B350B0 160deg, transparent 90deg, transparent 360deg) border-box",
+                  zIndex: 1,
+                } as React.CSSProperties
+              }
+            ></div>
+            {/* SVG Blur Background */}
+            <div className="absolute bottom-0 flex justify-center items-center pointer-events-none z-50">
+              <Image
+                src={rocketBg.src}
+                alt="Rocket background"
+                width={360}
+                height={253}
+                style={{
+                  width: "350px",
+                  height: "333px",
+                }}
+                className="opacity-0 group-hover:opacity-100 transition-all duration-500"
+              />
+            </div>
+
+            <Container className=" py-0 absolute inset-[2px] rounded-[18px] bg-[#0E0224] z-20">
+              <Container className="px-8 lg:px-8 absolute inset-0 rounded-[18px] py-0 flex flex-col items-center justify-center text-center gap-y-2 cards-gradient">
+                <Image
+                  src={service.image}
+                  alt={service.title}
+                  width={100}
+                  height={100}
+                  className="w-[100px] h-[100px] object-cover mb-4 relative z-10"
+                />
+                <Typography
+                  type="title"
+                  size="medium"
+                  className="text-gradient-silver relative z-10"
+                >
+                  {service.title}
+                </Typography>
+                <Typography
+                  type="sub"
+                  size="sub-desc"
+                  className="text-base-70 max-md:max-w-[296px] relative z-10"
+                >
+                  {service.desc}
+                </Typography>
+              </Container>
+            </Container>
+          </Container>
+        ))}
+      </Container>
+      {/* Animated border keyframes for service cards */}
+      {/* Trusted by */}
+      <Container className="basic-container mt-[90px]">
+        <Typography
+          type="title"
+          size="sub-desc"
+          className="text-gradient-silver relative z-10 text-center font-bold"
+        >
+          {services_content.trusted_by}
+        </Typography>
+        <Container className="basic-container flex gap-x-[37.55px] mt-[37.95px]">
+          <div className="relative w-full overflow-hidden">
+            {/* Carousel track */}
+            <div
+              className="flex gap-x-[37.55px] animate-carousel"
+              style={{
+                width: "max-content",
+                animation: "carousel-scroll 20s linear infinite",
+              }}
+            >
+              {services_content.trusting_companies.map((company, index) =>
+                Array.from({ length: 15 }).map((_, i) => (
+                  <Image
+                    key={index + "-" + i}
+                    src={company.logo}
+                    alt={company.name}
+                    width={200}
+                    height={100}
+                    className="w-[148.08px] h-[29.32px]"
+                  />
+                ))
+              )}
+            </div>
+            {/* Left gradient cover */}
+            <div
+              className="absolute left-0 top-0 h-full pointer-events-none w-[188.87px]"
+              style={{
+                background:
+                  "linear-gradient(270deg, #0E0224 0%, rgba(14, 2, 36, 0.4) 100%)",
+                zIndex: 2,
+                transform: "matrix(-1, 0, 0, 1, 0, 0)",
+              }}
+            ></div>
+            {/* Right gradient cover */}
+            <div
+              className="absolute right-0 top-0 h-full w-[80px] pointer-events-none"
+              style={{
+                background:
+                  "linear-gradient(270deg, #0E0224 0%, rgba(14, 2, 36, 0.4) 100%)",
+                zIndex: 2,
+              }}
+            ></div>
+            {/* Carousel keyframes */}
+            <style>{`
+              @keyframes carousel-scroll {
+                0% { transform: translateX(0); }
+                100% { transform: translateX(-50%); }
+              }
+            `}</style>
+          </div>
+        </Container>
+      </Container>
+    </Container>
+  );
+};

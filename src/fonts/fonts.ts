@@ -7,6 +7,11 @@ export const font_title = localFont({
       weight: "400",
       style: "Heavy",
     },
+    {
+      path: "./CraftworkGrotesk-Bold.ttf",
+      weight: "700",
+      style: "Bold",
+    },
   ],
   variable: "--font-header",
   display: "swap",
