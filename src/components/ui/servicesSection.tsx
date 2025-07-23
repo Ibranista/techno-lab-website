@@ -50,20 +50,9 @@ export const ServicesSection = () => {
         {services_content.services_list.map((service, index) => (
           <Container
             key={index}
-            className="cursor-pointer relative group w-full min-h-[253px] rounded-[19px] py-9 flex flex-col items-center justify-center text-center gap-y-2 overflow-hidden border border-transparent"
-            style={{ "--border-angle": "0deg" } as React.CSSProperties}
+            className="cursor-pointer relative group w-full min-h-[253px] rounded-[19px] py-9 flex flex-col items-center justify-center text-center gap-y-2 overflow-hidden"
           >
-            {/* Animated border overlay */}
-            <div
-              className="absolute inset-0 rounded-[19px] pointer-events-none transition-opacity duration-500 opacity-0 group-hover:opacity-100 animate-border"
-              style={
-                {
-                  background:
-                    "conic-gradient(from var(--border-angle), #E46CAA 0deg, #8334B6 45deg, #B350B0 160deg, transparent 90deg, transparent 360deg) border-box",
-                  zIndex: 1,
-                } as React.CSSProperties
-              }
-            ></div>
+            <Container className="basic-container absolute inset-0 box"></Container>
             {/* SVG Blur Background */}
             <div className="absolute bottom-0 flex justify-center items-center pointer-events-none z-50">
               <Image
@@ -79,8 +68,8 @@ export const ServicesSection = () => {
               />
             </div>
 
-            <Container className=" py-0 absolute inset-[2px] rounded-[18px] bg-[#0E0224] z-20">
-              <Container className="px-8 lg:px-8 absolute inset-0 rounded-[18px] py-0 flex flex-col items-center justify-center text-center gap-y-2 cards-gradient">
+            <Container className=" basic-container bg-[#0E0224] py-0 absolute inset-[2px] rounded-[18px] z-20 px-8 lg:px-8 ">
+              <Container className="absolute inset-0 flex flex-col items-center justify-center text-center gap-y-2 cards-gradient">
                 <Image
                   src={service.image}
                   alt={service.title}

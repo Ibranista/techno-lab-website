@@ -84,6 +84,10 @@
     background: linear-gradient(115.47deg, rgba(217, 217, 217, 0.12) 0.57%, rgba(115, 115, 115, 0.12) 99.43%);
   }
 
+  .services-card {
+    background: linear-gradient(115.47deg, #E46CAA 0.57%, #8334B6 99.43%, #B350B000);
+  }
+
   /* gradients */
 
   .hero-title-gradient {

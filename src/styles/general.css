@@ -1,0 +1,33 @@
+.box {
+    opacity: 0;
+    transition: all 0.5s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 12px;
+    border: 2px solid #00000000;
+    border-radius: 18px;
+    background: linear-gradient(#131219, #131219) padding-box, linear-gradient(var(--angle),
+            #E46CAA,
+            #8334B6,
+            #B350B000,
+            #B350B000,
+            #B350B000) border-box;
+    animation: 8s rotate linear infinite;
+}
+
+.group:hover .box {
+    opacity: 1;
+}
+
+@keyframes rotate {
+    to {
+        --angle: 360deg;
+    }
+}
+
+@property --angle {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+}

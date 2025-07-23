@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "@/styles/general.css";
 import Navbar from "@/components/ui/navbar";
 import { HeroSection } from "@/components/ui/heroSection";
 import { Container } from "@/components/container";
