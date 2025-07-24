@@ -38,7 +38,7 @@ export default function RootLayout({
         {/* <ServicesSection /> */}
         {/* <FeatureHome /> */}
         <RocketBackground />
-        <DiffSection />
+        {/* <DiffSection /> */}
       </body>
     </html>
   );

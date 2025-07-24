@@ -19,22 +19,32 @@ export function RocketBackground() {
 
   useGSAP(
     () => {
-      gsap
-        .timeline({
-          scrollTrigger: {
-            trigger: ".b",
-            toggleActions: "restart none reverse start",
-            start: "center center",
-            end: "bottom -264px",
-            scrub: false,
-            // markers: true,
-            pin: true,
+      const tl = gsap.timeline();
+      tl.from(".a", { yPercent: 100 });
+      tl.to(".b", {
+        // x: 350,
+        scale: 1.5,
+        duration: 3,
+        scrollTrigger: {
+          trigger: ".b",
+          toggleActions: "restart pause reverse start",
+          start: "center 49%",
+          // end: "+=200px",
+          endTrigger: ".c",
+          end: "center center",
+          scrub: true,
+          markers: true,
+          pin: true,
+          anticipatePin: 1,
+          snap: {
+            snapTo: 1,
+            duration: 1,
+            delay: 0,
+            ease: "power1.inOut",
           },
-        })
-        .to(".b", {
-          x: 350,
-          duration: 3,
-        });
+        },
+        // scale: 1.2,
+      });
     },
     { scope: container, dependencies: [animationKey] } // ← this watches for changes
   );
@@ -45,32 +55,8 @@ export function RocketBackground() {
       style={{
         background: `repeating-linear-gradient(90deg, #e5e7eb 0 1px, transparent 1px 40px), repeating-linear-gradient(180deg, #e5e7eb 0 1px, transparent 1px 40px)`,
       }}
+      className=""
     >
-      <button
-        onClick={refresh}
-        style={{
-          position: "fixed",
-          top: 20,
-          left: 20,
-          zIndex: 9999,
-          padding: "8px 12px",
-          background: "black",
-          color: "white",
-        }}
-      >
-        Refresh GSAP
-      </button>
-
-      <section
-        style={{
-          height: "100vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <div className="boxy a"></div>
-      </section>
       <section
         style={{
           height: "100vh",
@@ -78,9 +64,13 @@ export function RocketBackground() {
           alignItems: "center",
           justifyContent: "center",
           background: "#f3f4f6",
+          flexDirection: "column",
         }}
       >
-        <div className="boxy b"></div>
+        <div className="b-wrapper">
+          <div className="b-text">🚀 Launching Soon</div>
+          <div className="boxy b"></div>
+        </div>
       </section>
       <section
         style={{
