@@ -7,6 +7,8 @@ import { Container } from "@/components/container";
 import Head from "next/head";
 import { ServicesSection } from "@/components/ui/servicesSection";
 import FeatureHome from "@/components/ui/featureHome";
+import { RocketBackground } from "@/components/RocketBackground";
+import { DiffSection } from "@/components/DiffSection";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -28,13 +30,15 @@ export default function RootLayout({
           type="image/svg+xml"
         />
       </Head>
-      <body>
-        <Container className="h-screen bg-[url('../assets/hero-bg.svg')] bg-no-repeat bg-center bg-[length:auto_100%]">
+      <body className="bg-white">
+        {/* <Container className="h-screen bg-[url('../assets/hero-bg.svg')] bg-no-repeat bg-center bg-[length:auto_100%]">
           <Navbar />
           <HeroSection />
-        </Container>
-        <ServicesSection />
-        <FeatureHome />
+        </Container> */}
+        {/* <ServicesSection /> */}
+        {/* <FeatureHome /> */}
+        <RocketBackground />
+        <DiffSection />
       </body>
     </html>
   );

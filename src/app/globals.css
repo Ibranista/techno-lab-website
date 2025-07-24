@@ -54,6 +54,7 @@
 
   body {
     background: #0E0224;
+    overflow-x: hidden;
   }
 
   .basic-container {

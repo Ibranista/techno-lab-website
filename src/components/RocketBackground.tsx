@@ -1,34 +1,97 @@
+"use client";
+import "@/styles/animation.css";
+
+import React, { useRef, useState } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+
+gsap.registerPlugin(ScrollTrigger);
+
 export function RocketBackground() {
-  // linear-gradient(#172033)_padding-box
+  const container = useRef(null);
+  const [animationKey, setAnimationKey] = useState(0);
+
+  // For development: call this to refresh the GSAP animation
+  const refresh = () => {
+    window.location.reload();
+  };
+
+  useGSAP(
+    () => {
+      gsap
+        .timeline({
+          scrollTrigger: {
+            trigger: ".b",
+            toggleActions: "restart none reverse start",
+            start: "center center",
+            end: "bottom -264px",
+            scrub: false,
+            // markers: true,
+            pin: true,
+          },
+        })
+        .to(".b", {
+          x: 350,
+          duration: 3,
+        });
+    },
+    { scope: container, dependencies: [animationKey] } // ← this watches for changes
+  );
+
   return (
-    <main className="relative min-h-screen flex flex-col justify-center bg-slate-900 overflow-hidden">
-      <div className="w-full max-w-6xl mx-auto px-4 md:px-6 py-24">
-        {/* Animated Gradient Border */}
-        <section className="flex justify-center">
-          {/* Card with animated border */}
-          <div
-            className="w-full max-w-[422px] bg-slate-800 relative group rounded-2xl border border-transparent"
-            style={{ "--border-angle": "0deg" } as React.CSSProperties}
-          >
-            {/* Animated border overlay */}
-            <div
-              className="absolute inset-0 rounded-2xl pointer-events-none transition-opacity duration-700 opacitygroup-hover:opacity-100 animate-border"
-              style={
-                {
-                  background:
-                    "conic-gradient(from var(--border-angle), rgba(102,126,234,0.7) 0deg, rgba(102,126,234,0.7) 90deg, transparent 90deg, transparent 360deg) border-box",
-                  zIndex: 1,
-                } as React.CSSProperties
-              }
-            ></div>
-            {/* Card content */}
-            <div className="px-5 relative z-10">
-              <h1 className="text-2xl font-bold text-slate-200 mb-2">hello</h1>
-            </div>
-          </div>
-        </section>
-        {/* End: Animated Gradient Border */}
-      </div>
-    </main>
+    <div
+      ref={container}
+      style={{
+        background: `repeating-linear-gradient(90deg, #e5e7eb 0 1px, transparent 1px 40px), repeating-linear-gradient(180deg, #e5e7eb 0 1px, transparent 1px 40px)`,
+      }}
+    >
+      <button
+        onClick={refresh}
+        style={{
+          position: "fixed",
+          top: 20,
+          left: 20,
+          zIndex: 9999,
+          padding: "8px 12px",
+          background: "black",
+          color: "white",
+        }}
+      >
+        Refresh GSAP
+      </button>
+
+      <section
+        style={{
+          height: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <div className="boxy a"></div>
+      </section>
+      <section
+        style={{
+          height: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: "#f3f4f6",
+        }}
+      >
+        <div className="boxy b"></div>
+      </section>
+      <section
+        style={{
+          height: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <div className="boxy c"></div>
+      </section>
+    </div>
   );
 }

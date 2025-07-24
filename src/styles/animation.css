@@ -1,0 +1,9 @@
+section {
+    height: 100vh;
+}
+
+.boxy {
+    height: 300px;
+    width: 300px;
+    background-color: #00e1ff;
+}
