@@ -45,12 +45,12 @@ export const ServicesSection = () => {
       </article>
       <Container
         as="article"
-        className="px-0 lg:px-0 py-0 grid max-md:flex max-md:flex-wrap lg:flex-nowrap lg:grid-cols-3 gap-[28px]"
+        className="px-0 lg:px-0 py-0 md:grid flex flex-wrap md:grid-cols-2 xl:grid-cols-3 gap-[28px]"
       >
         {services_content.services_list.map((service, index) => (
           <Container
             key={index}
-            className="cursor-pointer relative group w-full min-h-[253px] rounded-[19px] py-9 flex flex-col items-center justify-center text-center gap-y-2 overflow-hidden"
+            className="min-w-[360px] cursor-pointer relative group w-full min-h-[253px] rounded-[19px] py-9 flex flex-col items-center justify-center text-center gap-y-2 overflow-hidden"
           >
             <Container className="basic-container absolute inset-0 box"></Container>
             {/* SVG Blur Background */}
@@ -68,8 +68,8 @@ export const ServicesSection = () => {
               />
             </div>
 
-            <Container className=" basic-container bg-[#0E0224] py-0 absolute inset-[2px] rounded-[18px] z-20 px-8 lg:px-8 ">
-              <Container className="absolute inset-0 flex flex-col items-center justify-center text-center gap-y-2 cards-gradient">
+            <Container className="basic-container bg-[#0E0224] py-0 absolute inset-[2px] rounded-[18px] z-20 px-8 lg:px-8 ">
+              <Container className="py-0 px-8 lg:px-8 absolute inset-0 flex flex-col items-center justify-center text-center gap-y-2 cards-gradient">
                 <Image
                   src={service.image}
                   alt={service.title}
