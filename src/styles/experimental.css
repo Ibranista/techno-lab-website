@@ -1,0 +1,53 @@
+@property --radius {
+    syntax: '<length>';
+    inherits: true;
+    initial-value: 0;
+}
+
+div[class] {
+    display: inline-block;
+    width: 150px;
+    cursor: pointer;
+    background: red;
+    margin: 20px;
+    --radius: 5px;
+    transition: --radius .3s;
+    clip-path: polygon(var(--path));
+    -webkit-mask: paint(rounded-shape);
+}
+
+div[class]:hover {
+    --radius: 15px;
+}
+
+div[class]::before {
+    content: "";
+    display: block;
+}
+
+.hexagone::before,
+.triangle::before {
+    padding-top: 86.6%;
+}
+
+.star::before,
+.custom::before {
+    padding-top: 100%;
+}
+
+.arrow::before {
+    padding-top: 70%;
+}
+
+div.hexagone {
+    --path: 25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%;
+    --radius: 5px;
+    background: red;
+    margin: 20px;
+    clip-path: polygon(var(--path));
+    -webkit-mask: paint(rounded-shape);
+}
+
+div.hexagone:hover {
+    --radius: 15px;
+}

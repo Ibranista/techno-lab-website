@@ -1,7 +1,7 @@
-import rocketIcon from "@/../public/services/rocket.png";
-import terminalIcon from "@/../public/services/terminal.png";
-import joaquinIcon from "@/../public/services/joaquin.png";
-import logoIpsum from "@/../public/services/logoipsum.svg";
+import rocketIcon from "@/assets/services/rocket.png";
+import terminalIcon from "@/assets/services/terminal.png";
+import joaquinIcon from "@/assets/services/joaquin.png";
+import logoIpsum from "@/assets/services/logoipsum.svg";
 
 export const services_content = {
   title: "Services we provide",

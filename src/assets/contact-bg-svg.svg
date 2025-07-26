@@ -1,0 +1,43 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="500"
+  height="500"
+>
+            <defs>
+              <linearGradient
+                id="fillGradient"
+                gradientTransform="rotate(115.47)"
+              >
+                <stop offset="0.57%" stopColor="rgba(217,217,217,0.25)" />
+                <stop offset="99.43%" stopColor="rgba(115,115,115,0.045)" />
+              </linearGradient>
+              <linearGradient
+                id="gradient"
+                gradientTransform="rotate(0 0.5 0.5)"
+              >
+                <stop offset="0%" stopColor="#E46CAA" stopOpacity="1" />
+                <stop offset="20%" stopColor="#8334B6" stopOpacity="0" />
+                <stop offset="20%" stopColor="#8334B600" stopOpacity={1} />
+                <stop offset="100%" stopColor="#8334B600" stopOpacity={1} />
+                <animateTransform
+                  attributeName="gradientTransform"
+                  type="rotate"
+                  from="0 0.5 0.5"
+                  to="360 0.5 0.5"
+                  dur="8s"
+                  repeatCount="indefinite"
+                />
+              </linearGradient>
+            </defs>
+            <rect
+              x="10"
+              y="10"
+              width="97%"
+              height="554px"
+              stroke="url(#gradient)"
+              fill="url(#fillGradient)"
+              strokeWidth="2"
+              rx="30"
+              ry="30"
+            />
+          </svg>
