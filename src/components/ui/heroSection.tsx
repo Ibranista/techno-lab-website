@@ -13,7 +13,7 @@ export const HeroSection = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay: 1, duration: 2 }}
-      className={`${font_accent.className} px-4 sm:px-6 md:px-8 lg:px-0 mt-[100px] md:mt-[150px] lg:mt-[187px]`}
+      className={`flex flex-col h-full justify-center ${font_accent.className} px-4 sm:px-6 md:px-8 lg:px-0`}
     >
       <article className="grid gap-8 md:gap-[186px]">
         {/* Title and Description */}

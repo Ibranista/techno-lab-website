@@ -14,7 +14,7 @@ import Link from "next/link";
 export default function ContactUs() {
   return (
     <Container
-      className="md:h-screen max-md:pb-[15px] pb-8 relative md:overflow-clip max-md:pt-[53px]"
+      className="contact-us md:h-screen max-md:pb-[15px] pb-8 relative md:overflow-clip max-md:pt-[53px]"
       // style={{
       //   backgroundImage: `url(${contactUsBg.src})`,
       //   backgroundPosition: "right",

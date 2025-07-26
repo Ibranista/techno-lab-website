@@ -1,4 +1,5 @@
 "use client";
+"use client";
 
 import React, { useRef } from "react";
 import { motion, useInView } from "framer-motion";
@@ -20,7 +21,7 @@ export default function Portfolio1() {
   }, [isInView]);
 
   return (
-    <Container className="h-screen flex justify-center items-center py-[30px]">
+    <Container className="portfolio2 h-screen flex justify-center items-center py-[30px]">
       <motion.div
         ref={containerRef}
         style={{

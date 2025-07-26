@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { Container } from "../container";
 import { Typography } from "../Typography";
@@ -5,7 +6,7 @@ import { featured_services_content } from "@/content/featured.content";
 
 const FeatureHome = () => {
   return (
-    <div>
+    <div className="feature-home">
       <Container className="h-screen">
         <Container as="article" className="basic-container">
           <Typography type="title" size="large" className="hero-title-gradient">
