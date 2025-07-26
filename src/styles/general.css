@@ -16,6 +16,44 @@
     animation: 8s rotate linear infinite;
 }
 
+.contact-us-form {
+    opacity: 1;
+    transition: all 0.5s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 12px;
+    border: 2px solid #00000000;
+    border-radius: 18px;
+    background: linear-gradient(#131219, #131219) padding-box, linear-gradient(var(--angle),
+            #E46CAA,
+            #8334B6,
+            #B350B000,
+            #B350B000,
+            #B350B000) border-box;
+    animation: 8s rotate linear infinite;
+    border-radius: 30px;
+}
+
+/* .svg-blur-bg {
+    opacity: 1;
+    transition: all 0.5s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 12px;
+    border: 2px solid #00000000;
+    border-radius: 18px;
+    background: linear-gradient(#131219, #131219) padding-box, linear-gradient(var(--angle),
+            #E46CAA,
+            #8334B6,
+            #B350B000,
+            #B350B000,
+            #B350B000) border-box;
+    animation: 8s rotate linear infinite;
+    border-radius: 30px;
+} */
+
 .group:hover .box {
     opacity: 1;
 }
@@ -30,4 +68,45 @@
     syntax: "<angle>";
     initial-value: 0deg;
     inherits: false;
+}
+
+
+/* glassy background */
+.glassy {
+    background: linear-gradient(115.47deg, rgba(217, 217, 217, 0.25) 0.57%, rgba(115, 115, 115, 0.045) 99.43%);
+    backdrop-filter: blur(2px);
+    /* Note: backdrop-filter has minimal browser support */
+    border-radius: 30px;
+}
+
+
+/* main contact page gradient background */
+/* Ellipse 8 */
+
+/* position: absolute;
+width: 1182px;
+height: 510px;
+left: calc(50% - 1182px/2 + 484px);
+top: calc(50% - 510px/2 - 398.86px); */
+
+/* Gradient */
+/* background: linear-gradient(180.64deg, #E46CAA 10.89%, #8334B6 99.45%);
+opacity: 0.9;
+filter: blur(102px);
+transform: rotate(-105deg); */
+
+.main-contact-bg {
+    background-image: url('/bg-blur.svg');
+    background-position: 100% 0;
+    background-size: 60% 100%;
+    background-repeat: no-repeat;
+    filter: blur(15px);
+}
+
+/* for screens less than 768px */
+@media (max-width: 768px) {
+    .main-contact-bg {
+        background-size: cover;
+        background-position: center;
+    }
 }

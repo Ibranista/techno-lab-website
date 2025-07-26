@@ -8,12 +8,15 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const DiffSection = () => {
   const containerRef = useRef(null);
+  const skyBoxRef = useRef(null);
 
   useGSAP(
     () => {
       const tl = gsap.timeline();
 
-      tl.from(".orange", { xPercent: -100 })
+      tl.from(".yellow", { yPercent: 100 })
+        .from(".second-yellow", { yPercent: 100 })
+        .from(".orange", { xPercent: -100 })
         .from(".purple", { xPercent: 100 })
         .from(".green", { yPercent: -100 });
 
@@ -26,9 +29,10 @@ const DiffSection = () => {
         pin: true,
         anticipatePin: 1,
         snap: {
-          snapTo: 1 / 3,
+          snapTo: 1 / 5,
           duration: 1,
-          ease: "none",
+          delay: 0,
+          ease: "power1.inOut",
         },
       });
     },
@@ -58,12 +62,26 @@ const DiffSection = () => {
         </div>
       </div>
 
+      {/* yellow */}
+      <div className="panel yellow bg-yellow-400 h-screen w-full flex items-center justify-center text-white text-4xl font-bold absolute top-0 left-0">
+        {/* 300 by 300 box with skyblue background */}
+        <div className="skyBox bg-sky-300 h-72 w-72">Yellow panel</div>
+      </div>
+      <div className="panel second-yellow bg-yellow-700 h-screen w-full flex items-center justify-center text-white text-4xl font-bold absolute top-0 left-0">
+        {/* 300 by 300 box with skyblue background */}
+        <div className="skyBox bg-sky-300 h-72 w-72">Second Yellow panel</div>
+      </div>
+      {/* orange */}
       <div className="panel orange bg-orange-500 h-screen w-full flex items-center justify-center text-white text-4xl font-bold absolute top-0 left-0">
         Orange panel
       </div>
+
+      {/* purple */}
       <div className="panel purple bg-purple-500 h-screen w-full flex items-center justify-center text-white text-4xl font-bold absolute top-0 left-0">
         Purple panel
       </div>
+
+      {/* green */}
       <div className="panel green bg-green-500 h-screen w-full flex items-center justify-center text-white text-4xl font-bold absolute top-0 left-0">
         Green panel
       </div>

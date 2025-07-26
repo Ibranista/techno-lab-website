@@ -1,3 +1,7 @@
+import messageIcon from "@/assets/contact-us/message-icon.png";
+import locationIcon from "@/assets/contact-us/location-icon.png";
+import phoneIcon from "@/assets/contact-us/phone-icon.png";
+
 export const contact_content = {
   title: "Contact us",
   description:
@@ -5,19 +9,19 @@ export const contact_content = {
   contacts: [
     {
       type: "Send an email",
-      image: "/images/contact/email.png",
+      image: messageIcon,
       desc: "Our friendly team is here to help.",
       value: "Hello@technolabet.com",
     },
     {
       type: "Visit us",
-      image: "/images/contact/location.png",
+      image: locationIcon,
       desc: "Come say hello at our HQ",
       value: "AG Grace Plaza, 6th floor, 22 Bole",
     },
     {
       type: "Call us on",
-      image: "/images/contact/phone.png",
+      image: phoneIcon,
       desc: "Monday – Friday 9am to 5pm",
       value: "+251",
     },

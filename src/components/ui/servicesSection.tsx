@@ -4,9 +4,9 @@ import { Typography } from "../Typography";
 import Link from "next/link";
 import Image from "next/image";
 // icon from the public directory
-import icon from "@/../public/services/arrow-right.svg";
-import hoveredRocket from "@/../public/services/hovered-rocket.png";
-import rocketBg from "@/../public/services/services-bg-vector.svg";
+import icon from "@/assets/services/arrow-right.svg";
+import hoveredRocket from "@/assets/services/hovered-rocket.png";
+import rocketBg from "@/assets/services/services-bg-vector.svg";
 
 export const ServicesSection = () => {
   return (
@@ -96,7 +96,6 @@ export const ServicesSection = () => {
           </Container>
         ))}
       </Container>
-      {/* Animated border keyframes for service cards */}
       {/* Trusted by */}
       <Container className="basic-container mt-[90px]">
         <Typography

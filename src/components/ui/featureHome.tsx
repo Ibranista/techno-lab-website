@@ -19,6 +19,9 @@ const FeatureHome = () => {
             {featured_services_content.desc}
           </Typography>
         </Container>
+        <Container className="basic-container">
+          <p className="bg-sky-700 max-w-[1139px] mx-auto">Hello</p>
+        </Container>
       </Container>
     </div>
   );

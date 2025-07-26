@@ -9,6 +9,10 @@ import { ServicesSection } from "@/components/ui/servicesSection";
 import FeatureHome from "@/components/ui/featureHome";
 import { RocketBackground } from "@/components/RocketBackground";
 import { DiffSection } from "@/components/DiffSection";
+import Portfolio1 from "@/components/ui/portfolio1";
+import Portfolio2 from "@/components/ui/portfolio2";
+import ContactUs from "@/components/ui/contactUs";
+import { Footer } from "@/components/footer";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -30,15 +34,18 @@ export default function RootLayout({
           type="image/svg+xml"
         />
       </Head>
-      <body className="bg-white">
-        {/* <Container className="h-screen bg-[url('../assets/hero-bg.svg')] bg-no-repeat bg-center bg-[length:auto_100%]">
+      <body className="">
+        <Container className="h-screen bg-[url('../assets/hero-bg.svg')] bg-no-repeat bg-center bg-[length:auto_100%]">
           <Navbar />
           <HeroSection />
-        </Container> */}
-        {/* <ServicesSection /> */}
-        {/* <FeatureHome /> */}
-        <RocketBackground />
-        <DiffSection />
+        </Container>
+        <ServicesSection />
+        <FeatureHome />
+        <Portfolio1 />
+        <Portfolio2 />
+        <ContactUs />
+        {/* <RocketBackground /> */}
+        {/* <DiffSection /> */}
       </body>
     </html>
   );
