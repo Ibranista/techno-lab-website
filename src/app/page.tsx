@@ -69,6 +69,18 @@ export default function Home() {
     { scope: containerRef }
   );
 
+useGSAP(
+    () => {
+      // for hello-screen
+      const helloScreen = document.querySelector(".hello-screen");
+      if (!helloScreen) return;
+      gsap.to(helloScreen, {
+        opacity: 1,
+        duration: 1,
+        ease: "power1.inOut",
+      });
+    });
+
   return (
     <div ref={containerRef} className="overflow-hidden h-screen">
       <Container className="h-screen bg-[url('../assets/hero-bg.svg')] bg-no-repeat bg-center bg-[length:auto_100%] nav-hero-wrapper">
@@ -77,6 +89,7 @@ export default function Home() {
         <div className="hero-overlay absolute inset-0 bg-black opacity-0 pointer-events-none"></div>
       </Container>
       <ServicesSection />
+      <div className="h-100 bg-sky-800 hello-screen">Hello World!</div>
     </div>
   );
 }
