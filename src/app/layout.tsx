@@ -38,7 +38,7 @@ export default function RootLayout({
         <Container className="h-screen bg-[url('../assets/hero-bg.svg')] bg-no-repeat bg-center bg-[length:auto_100%]">
           <Navbar />
           <HeroSection />
-        </Container> */}
+        </Container>
         {/* <ServicesSection /> */}
         {/* <FeatureHome /> */}
         <RocketBackground />
