@@ -28,7 +28,7 @@ const slideUpVariant2 = {
 
 export const ServicesSection = () => {
   return (
-    <Container className="scrll-triggering-absolute services-section flex flex-col gap-y-[36.33px] lg:h-screen pt-[87px] pb-[86px] bg-[#0E0224] rounded-tl-[60px] rounded-tr-[60px]">
+    <Container className="panel absolute inset-0 panel-hidden services-section flex flex-col justify-between gap-y-[36.33px] lg:h-screen pt-[87px] pb-[86px] bg-[#0E0224] rounded-tl-[60px] rounded-tr-[60px]">
       {/* Header Animation */}
       <motion.article
         className="services-header-wrapper"
