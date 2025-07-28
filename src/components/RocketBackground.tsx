@@ -1,87 +1,61 @@
 "use client";
 import "@/styles/animation.css";
 
-import React, { useRef, useState } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useGSAP } from "@gsap/react";
+import React, { RefObject } from "react";
+import { Typography } from "./Typography";
+import { Container } from "./container";
+import { featured_services_content } from "@/content/featured.content";
 
-gsap.registerPlugin(ScrollTrigger);
-
-export function RocketBackground() {
-  const container = useRef(null);
-  const [animationKey, setAnimationKey] = useState(0);
-
-  // For development: call this to refresh the GSAP animation
-  const refresh = () => {
-    window.location.reload();
-  };
-
-  useGSAP(
-    () => {
-      const tl = gsap.timeline();
-      tl.from(".a", { yPercent: 100 });
-      tl.to(".b", {
-        // x: 350,
-        scale: 1.5,
-        duration: 3,
-        scrollTrigger: {
-          trigger: ".b",
-          toggleActions: "restart pause reverse start",
-          start: "center 49%",
-          // end: "+=200px",
-          endTrigger: ".c",
-          end: "center center",
-          scrub: true,
-          markers: true,
-          pin: true,
-          anticipatePin: 1,
-          snap: {
-            snapTo: 1,
-            duration: 1,
-            delay: 0,
-            ease: "power1.inOut",
-          },
-        },
-        // scale: 1.2,
-      });
-    },
-    { scope: container, dependencies: [animationKey] } // ← this watches for changes
-  );
-
+export function RocketBackground({
+  increaseSizeRef,
+  changeDirectionForDestinationRef,
+}: {
+  increaseSizeRef?: RefObject<HTMLDivElement | null>;
+  changeDirectionForDestinationRef?: RefObject<HTMLDivElement | null>;
+}) {
   return (
-    <div
-      ref={container}
-      style={{
-        background: `repeating-linear-gradient(90deg, #e5e7eb 0 1px, transparent 1px 40px), repeating-linear-gradient(180deg, #e5e7eb 0 1px, transparent 1px 40px)`,
-      }}
-      className=""
-    >
-      <section
+    <section className="panel increase-size absolute inset-0 panel-hidden flex justify-center items-center bg-[#0E0224] py-[87px]">
+      <Container
+        ref={increaseSizeRef}
+        className="to-be-scaled rounded-[30px] my-auto mx-auto relative"
         style={{
-          height: "100vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          background: "#f3f4f6",
-          flexDirection: "column",
+          width: "90%",
+          height: "422px",
         }}
       >
-        <div className="b-wrapper">
-          <div className="b-text">🚀 Launching Soon</div>
-          <div className="boxy b"></div>
-        </div>
-      </section>
-      <section
-        style={{
-          height: "100vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <div className="boxy c"></div>
-      </section>
-    </div>
+        <section
+          className="rounded-[30px] absolute inset-0 bg-[url('../assets/featured/featured_work.png')] bg-no-repeat bg-center 
+        bg-cover
+        "
+        >
+          <Container
+            as="article"
+            className="basic-container absolute -top-[180px] left-0"
+          >
+            <Typography
+              type="title"
+              size="large"
+              className="hero-title-gradient"
+            >
+              {featured_services_content.name}
+            </Typography>
+            <Typography
+              type="sub"
+              size="sub-desc"
+              className=" text-base-70 max-w-[415px] text-left"
+            >
+              {featured_services_content.desc}
+            </Typography>
+          </Container>
+        </section>
+        <div
+          // ref={changeDirectionForDestinationRef}
+          className="panel scaler-destination absolute inset-0 panel-hidden bg-amber-700-300 flex justify-center items-center"
+        ></div>
+      </Container>
+      <div className="next-to-destination panel absolute inset-0 panel-hidden text-white flex items-center justify-center bg-gray-900">
+        mover
+      </div>
+    </section>
   );
 }

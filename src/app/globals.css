@@ -15,6 +15,15 @@
   /* Fully visible on hover */
 }
 
+.panel:not(:first-child) {
+  visibility: hidden;
+}
+
+/* optional: ensures no flicker before JS */
+body.js-loaded .panel {
+  visibility: visible;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
