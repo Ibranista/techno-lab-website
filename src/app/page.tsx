@@ -234,23 +234,43 @@ export default function Home() {
       currentIndex.current = index;
     }
 
-    Observer.create({
-      target: window,
-      type: "wheel,touch,pointer",
-      wheelSpeed: -1,
-      onDown: () => goToSection(currentIndex.current - 1),
-      onUp: () => goToSection(currentIndex.current + 1),
-      onPress: () => {
-        if (currentIndex.current === 2 && page3State.current < 2) {
-          handlePage3Sequence();
-        } else {
-          goToSection(currentIndex.current + 1);
-        }
-      },
-      tolerance: 10,
-      preventDefault: true,
-      dragMinimum: 10,
-    });
+    if (window.innerWidth >= 768) {
+      Observer.create({
+        target: window,
+        type: "wheel,touch,pointer",
+        wheelSpeed: -1,
+        onDown: () => goToSection(currentIndex.current - 1),
+        onUp: () => goToSection(currentIndex.current + 1),
+        onPress: () => {
+          if (currentIndex.current === 2 && page3State.current < 2) {
+            handlePage3Sequence();
+          } else {
+            goToSection(currentIndex.current + 1);
+          }
+        },
+        tolerance: 10,
+        preventDefault: true,
+        dragMinimum: 10,
+      });
+    } else {
+      Observer.create({
+        target: window,
+        type: "wheel",
+        wheelSpeed: -1,
+        onDown: () => goToSection(currentIndex.current - 1),
+        onUp: () => goToSection(currentIndex.current + 1),
+        onPress: () => {
+          if (currentIndex.current === 2 && page3State.current < 2) {
+            handlePage3Sequence();
+          } else {
+            goToSection(currentIndex.current + 1);
+          }
+        },
+        tolerance: 10,
+        preventDefault: true,
+        dragMinimum: 10,
+      });
+    }
 
     return () => {
       Observer.getAll().forEach((obs) => obs.kill());
