@@ -11,3 +11,16 @@ section {
 .boxy.b {
     background-color: #ff00e1;
 }
+
+.b-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.b-text {
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    transition: transform 0.3s ease;
+}
