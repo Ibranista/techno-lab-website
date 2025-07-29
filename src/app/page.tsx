@@ -1,95 +1,242 @@
 "use client";
 
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { Observer } from "gsap/Observer";
+import FeatureHome from "@/components/ui/featureHome";
 import { Container } from "@/components/container";
 import Navbar from "@/components/ui/navbar";
 import { HeroSection } from "@/components/ui/heroSection";
 import { ServicesSection } from "@/components/ui/servicesSection";
-import { useRef } from "react";
-import gsap from "gsap";
-import { Observer } from "gsap/Observer";
-import { useGSAP } from "@gsap/react";
+import Portfolio2 from "@/components/ui/portfolio2";
+import ContactUs from "@/components/ui/contactUs";
 
 gsap.registerPlugin(Observer);
 
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const tlRef = useRef<gsap.core.Timeline | null>(null);
-  const observerRef = useRef<Observer | null>(null);
-  const animatingRef = useRef(false);
+  const currentIndex = useRef(0);
+  const isAnimating = useRef(false);
+  const page3State = useRef(0); // 0: initial, 1: box grown, 2: box moved left
 
-  useGSAP(
-    () => {
-      const container = containerRef.current;
-      if (!container) return;
+  useEffect(() => {
+    const sections = gsap.utils.toArray(".panel") as HTMLElement[];
 
-      const tl = gsap.timeline({ paused: true });
-      tl.to(".services-section", { yPercent: -100 });
-      tl.to(".hero-overlay", { opacity: 1 }, "<");
-      tlRef.current = tl;
-
-      const handleScroll = (direction: "down" | "up") => {
-        if (animatingRef.current || !tl) return;
-        animatingRef.current = true;
-        observerRef.current?.disable();
-
-        gsap.to(tl, {
-          progress: direction === "down" ? 1 : 0,
-          duration: 1.2,
-          ease: "power1.inOut",
-          onComplete: () => {
-            animatingRef.current = false;
-            observerRef.current?.enable();
-          },
+    // Set initial positions - all panels start from bottom except first one
+    sections.forEach((section, index) => {
+      if (index === 0) {
+        gsap.set(section, {
+          visibility: "visible",
+          yPercent: 0,
         });
-      };
-
-      const obs = Observer.create({
-        target: container,
-        type: "wheel,touch",
-        tolerance: 5,
-        // Remove onClick here, because it doesn't exist in Observer API
-        onDown: () => handleScroll("down"),
-        onUp: () => handleScroll("up"),
-      });
-
-      observerRef.current = obs;
-
-      // Add click listener manually
-      const onClick = () => {
-        handleScroll("down");
-      };
-      container.addEventListener("click", onClick);
-
-      return () => {
-        obs.kill();
-        tl.kill();
-        container.removeEventListener("click", onClick);
-      };
-    },
-    { scope: containerRef }
-  );
-
-useGSAP(
-    () => {
-      // for hello-screen
-      const helloScreen = document.querySelector(".hello-screen");
-      if (!helloScreen) return;
-      gsap.to(helloScreen, {
-        opacity: 1,
-        duration: 1,
-        ease: "power1.inOut",
-      });
+      } else {
+        gsap.set(section, {
+          visibility: "visible",
+          yPercent: 100,
+        });
+      }
     });
 
+    // Initialize page 3 elements
+    const page3BoxContainer = document.querySelector(
+      ".page3-box-container"
+    ) as HTMLElement;
+    const page3Box = document.querySelector(".page3-box") as HTMLElement;
+    const page3RevealBox = document.querySelector(
+      ".page3-reveal"
+    ) as HTMLElement;
+
+    if (page3BoxContainer && page3Box && page3RevealBox) {
+      gsap.set(page3BoxContainer, { x: 0 });
+      gsap.set(page3Box, { width: "100%", height: 400 });
+      gsap.set(page3RevealBox, { opacity: 1 }); // Always visible behind
+    }
+
+    function handlePage3Sequence() {
+      const page3BoxContainer = document.querySelector(
+        ".page3-box-container"
+      ) as HTMLElement;
+      const page3Box = document.querySelector(".page3-box") as HTMLElement;
+
+      if (!page3BoxContainer || !page3Box) return;
+
+      if (page3State.current === 0) {
+        // Grow the box
+        isAnimating.current = true;
+        gsap.to(page3Box, {
+          width: "105%",
+          height: 700,
+          duration: 0.8,
+          ease: "power2.out",
+          onComplete: () => {
+            page3State.current = 1;
+            isAnimating.current = false;
+          },
+        });
+      } else if (page3State.current === 1) {
+        // Move entire container left with scale, background, and opacity effects
+        isAnimating.current = true;
+        gsap.to(page3BoxContainer, {
+          x: "-100%",
+          scaleY: 0.3,
+          backgroundColor: "#ffffff",
+          opacity: 0.7,
+          transformOrigin: "center center",
+          duration: 1,
+          ease: "power2.inOut",
+          onComplete: () => {
+            page3State.current = 2;
+            isAnimating.current = false;
+          },
+        });
+      } else if (page3State.current === 2) {
+        // Continue to next page
+        goToSection(currentIndex.current + 1);
+      }
+    }
+
+    function handlePage3Reverse() {
+      const page3BoxContainer = document.querySelector(
+        ".page3-box-container"
+      ) as HTMLElement;
+      const page3Box = document.querySelector(".page3-box") as HTMLElement;
+
+      if (!page3BoxContainer || !page3Box) return;
+
+      if (page3State.current === 2) {
+        // Bring container back from right with reverse effects
+        isAnimating.current = true;
+        gsap.to(page3BoxContainer, {
+          x: 0,
+          scaleY: 1,
+          backgroundColor: "#0E0224", // green-500
+          opacity: 1,
+          transformOrigin: "center center",
+          duration: 1,
+          ease: "power2.inOut",
+          onComplete: () => {
+            page3State.current = 1;
+            isAnimating.current = false;
+          },
+        });
+      } else if (page3State.current === 1) {
+        // Shrink the box back
+        isAnimating.current = true;
+        gsap.to(page3Box, {
+          width: "100%",
+          height: 400,
+          duration: 0.8,
+          ease: "power2.out",
+          onComplete: () => {
+            page3State.current = 0;
+            isAnimating.current = false;
+          },
+        });
+      }
+    }
+
+    function goToSection(index: number) {
+      if (isAnimating.current) return;
+      index = Math.max(0, Math.min(sections.length - 1, index));
+      if (index === currentIndex.current) return;
+
+      // Handle Page 3 special sequence
+      if (currentIndex.current === 2) {
+        if (index > currentIndex.current && page3State.current < 2) {
+          handlePage3Sequence();
+          return;
+        } else if (index < currentIndex.current && page3State.current > 0) {
+          handlePage3Reverse();
+          return;
+        }
+      }
+
+      isAnimating.current = true;
+      const nextSection = sections[index];
+      const currentSection = sections[currentIndex.current];
+
+      if (index > currentIndex.current) {
+        // Moving forward - next section slides up from bottom
+        gsap.to(nextSection, {
+          yPercent: 0,
+          duration: 1,
+          ease: "power2.inOut",
+          onComplete: () => {
+            isAnimating.current = false;
+            // Reset page 3 state when leaving
+            if (currentIndex.current === 2) {
+              page3State.current = 0;
+              const page3BoxContainer = document.querySelector(
+                ".page3-box-container"
+              ) as HTMLElement;
+              const page3Box = document.querySelector(
+                ".page3-box"
+              ) as HTMLElement;
+              if (page3BoxContainer && page3Box) {
+                gsap.set(page3BoxContainer, { x: 0 });
+                gsap.set(page3Box, { width: "100%", height: 400 });
+              }
+            }
+          },
+        });
+      } else {
+        // Moving backward - current section slides down to bottom
+        gsap.to(currentSection, {
+          yPercent: 100,
+          duration: 1,
+          ease: "power2.inOut",
+          onComplete: () => {
+            isAnimating.current = false;
+          },
+        });
+      }
+
+      currentIndex.current = index;
+    }
+
+    Observer.create({
+      target: window,
+      type: "wheel,touch,pointer",
+      wheelSpeed: -1,
+      onDown: () => goToSection(currentIndex.current - 1),
+      onUp: () => goToSection(currentIndex.current + 1),
+      onPress: () => {
+        if (currentIndex.current === 2 && page3State.current < 2) {
+          handlePage3Sequence();
+        } else {
+          goToSection(currentIndex.current + 1);
+        }
+      },
+      tolerance: 10,
+      preventDefault: true,
+      dragMinimum: 10,
+    });
+
+    return () => {
+      Observer.getAll().forEach((obs) => obs.kill());
+    };
+  }, []);
+
   return (
-    <div ref={containerRef} className="overflow-hidden h-screen">
-      <Container className="h-screen bg-[url('../assets/hero-bg.svg')] bg-no-repeat bg-center bg-[length:auto_100%] nav-hero-wrapper">
+    <div ref={containerRef} className="relative h-screen overflow-hidden">
+      {/* Page 1 */}
+      <Container className="panel absolute inset-0 h-screen bg-[url('../assets/hero-bg.svg')] bg-no-repeat bg-center bg-[length:auto_100%] nav-hero-wrapper">
         <Navbar />
         <HeroSection />
-        <div className="hero-overlay absolute inset-0 bg-black opacity-0 pointer-events-none"></div>
+        {/* <div className="hero-overlay absolute inset-0 bg-black opacity-0 pointer-events-none"></div> */}
       </Container>
+
+      {/* Page 2 */}
       <ServicesSection />
-      <div className="h-100 bg-sky-800 hello-screen">Hello World!</div>
+
+      {/* Page 3 - Special page with box animations */}
+      <FeatureHome />
+
+      {/* Page 4 */}
+      {/* portfolio 2 */}
+      <Portfolio2 />
+      {/* Page 5 */}
+      <ContactUs />
     </div>
   );
 }
