@@ -155,6 +155,33 @@ export default function Home() {
       const nextSection = sections[index];
       const currentSection = sections[currentIndex.current];
 
+      // Animate hero-overlay when moving from page 1 to page 2
+      if (currentIndex.current === 0 && index === 1) {
+        const heroOverlay = document.querySelector(
+          ".hero-overlay"
+        ) as HTMLElement;
+        if (heroOverlay) {
+          gsap.to(heroOverlay, {
+            opacity: 1,
+            duration: 0.8,
+            ease: "power2.inOut",
+          });
+        }
+      }
+      // Animate hero-overlay back to 0 when returning to page 1
+      if (index === 0) {
+        const heroOverlay = document.querySelector(
+          ".hero-overlay"
+        ) as HTMLElement;
+        if (heroOverlay) {
+          gsap.to(heroOverlay, {
+            opacity: 0,
+            duration: 0.8,
+            ease: "power2.inOut",
+          });
+        }
+      }
+
       if (index > currentIndex.current) {
         // Moving forward - next section slides up from bottom
         gsap.to(nextSection, {
@@ -162,6 +189,19 @@ export default function Home() {
           duration: 1,
           ease: "power2.inOut",
           onComplete: () => {
+            // Animate hero-overlay back to 0 after transition
+            if (currentIndex.current === 0 && index === 1) {
+              const heroOverlay = document.querySelector(
+                ".hero-overlay"
+              ) as HTMLElement;
+              if (heroOverlay) {
+                gsap.to(heroOverlay, {
+                  opacity: 0,
+                  duration: 0.8,
+                  ease: "power2.inOut",
+                });
+              }
+            }
             isAnimating.current = false;
             // Reset page 3 state when leaving
             if (currentIndex.current === 2) {
@@ -223,7 +263,7 @@ export default function Home() {
       <Container className="panel absolute inset-0 h-screen bg-[url('../assets/hero-bg.svg')] bg-no-repeat bg-center bg-[length:auto_100%] nav-hero-wrapper">
         <Navbar />
         <HeroSection />
-        {/* <div className="hero-overlay absolute inset-0 bg-black opacity-0 pointer-events-none"></div> */}
+        <div className="hero-overlay absolute inset-0 bg-black opacity-0 pointer-events-none"></div>
       </Container>
 
       {/* Page 2 */}

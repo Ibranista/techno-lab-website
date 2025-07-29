@@ -53,7 +53,7 @@ export const ServicesSection = () => {
           </Typography>
           <Link
             href="#"
-            className="pl-[30px] inline-flex items-center gap-x-[19.97px] overflow-hidden rounded-full bg-white border border-white"
+            className="pl-[30px] inline-flex items-center gap-x-[19.97px] overflow-hidden rounded-full bg-white border border-white group"
           >
             <Typography
               type="sub"
@@ -63,7 +63,13 @@ export const ServicesSection = () => {
               {services_content.btn_name}
             </Typography>
             <span className="flex h-10 w-10 items-center justify-center rounded-full btn-gradient">
-              <Image src={icon.src} alt="arrow" width={16} height={16} />
+              <Image
+                src={icon.src}
+                alt="arrow"
+                width={16}
+                height={16}
+                className="transition-transform duration-300 group-hover:rotate-45"
+              />
             </span>
           </Link>
         </Container>

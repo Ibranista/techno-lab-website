@@ -197,7 +197,7 @@ export default function ContactUs() {
                   })}
                   <button
                     type="submit"
-                    className="ml-auto max-w-[200px] pl-[44px] flex justify-between items-center gap-x-[18px]  overflow-hidden rounded-full bg-white border border-white"
+                    className="ml-auto max-w-[200px] pl-[44px] flex justify-between items-center gap-x-[18px]  overflow-hidden rounded-full bg-white border border-white group"
                   >
                     <Typography
                       type="sub"
@@ -212,6 +212,7 @@ export default function ContactUs() {
                         alt="arrow"
                         width={16}
                         height={16}
+                        className="transition-transform duration-300 group-hover:rotate-45"
                       />
                     </article>
                   </button>
