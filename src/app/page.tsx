@@ -1,6 +1,12 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
+
+declare global {
+  interface Window {
+    navigateToSection?: (index: number) => void;
+  }
+}
 import { gsap } from "gsap";
 import { Observer } from "gsap/Observer";
 import FeatureHome from "@/components/ui/featureHome";
@@ -307,7 +313,7 @@ export default function Test2() {
       goToSection(index, true); // true = nav click behavior
     }
     // Expose navigation function globally for nav links
-    (window as any).navigateToSection = navigateToSection;
+    window.navigateToSection = navigateToSection;
 
     Observer.create({
       target: window,
@@ -330,13 +336,13 @@ export default function Test2() {
 
     return () => {
       Observer.getAll().forEach((obs) => obs.kill());
-      delete (window as any).navigateToSection;
+      delete window.navigateToSection;
     };
   }, []);
 
   const handleNavClick = (index: number) => {
-    if ((window as any).navigateToSection) {
-      (window as any).navigateToSection(index);
+    if (window.navigateToSection) {
+      window.navigateToSection(index);
     }
   };
 
