@@ -356,7 +356,7 @@ export default function Test2() {
       </Container>
 
       {/* Page 2 */}
-      <ServicesSection />
+      <ServicesSection handleClick={handleNavClick} />
 
       {/* Page 3 */}
       <FeatureHome />
