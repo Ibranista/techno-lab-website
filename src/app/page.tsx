@@ -283,7 +283,10 @@ export default function Home() {
       <Container className="panel absolute inset-0 h-screen bg-[url('../assets/hero-bg.svg')] bg-no-repeat bg-center bg-[length:auto_100%] nav-hero-wrapper">
         <Navbar />
         <HeroSection />
-        <div className="hero-overlay absolute inset-0 bg-black opacity-0 pointer-events-none"></div>
+        <div
+          className="hero-overlay absolute inset-0 bg-black opacity-0 pointer-events-none z-10"
+          style={{ willChange: "opacity" }}
+        ></div>
       </Container>
 
       {/* Page 2 */}

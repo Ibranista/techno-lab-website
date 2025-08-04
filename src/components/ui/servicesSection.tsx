@@ -6,11 +6,8 @@ import { Typography } from "../Typography";
 import Link from "next/link";
 import Image from "next/image";
 import icon from "@/assets/services/arrow-right.svg";
-import hoveredRocket from "@/assets/services/hovered-rocket.png";
 import rocketBg from "@/assets/services/services-bg-vector.svg";
 import { motion } from "framer-motion";
-import { Splide, SplideSlide } from "@splidejs/react-splide";
-import "@splidejs/react-splide/css"; // or /css/core if you want no theme
 import Marquee from "react-fast-marquee";
 // Animation variants
 const fadeInVariant = {
