@@ -1,103 +1,302 @@
-import Image from "next/image";
+"use client";
+
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { Observer } from "gsap/Observer";
+import FeatureHome from "@/components/ui/featureHome";
+import { Container } from "@/components/container";
+import Navbar from "@/components/ui/navbar";
+import { HeroSection } from "@/components/ui/heroSection";
+import { ServicesSection } from "@/components/ui/servicesSection";
+import Portfolio2 from "@/components/ui/portfolio2";
+import ContactUs from "@/components/ui/contactUs";
+
+gsap.registerPlugin(Observer);
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const containerRef = useRef<HTMLDivElement>(null);
+  const currentIndex = useRef(0);
+  const isAnimating = useRef(false);
+  const page3State = useRef(0); // 0: initial, 1: box grown, 2: box moved left
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+  useEffect(() => {
+    const sections = gsap.utils.toArray(".panel") as HTMLElement[];
+
+    // Set initial positions - all panels start from bottom except first one
+    sections.forEach((section, index) => {
+      if (index === 0) {
+        gsap.set(section, {
+          visibility: "visible",
+          yPercent: 0,
+        });
+      } else {
+        gsap.set(section, {
+          visibility: "visible",
+          yPercent: 100,
+        });
+      }
+    });
+
+    // Initialize page 3 elements
+    const page3BoxContainer = document.querySelector(
+      ".page3-box-container"
+    ) as HTMLElement;
+    const page3Box = document.querySelector(".page3-box") as HTMLElement;
+    const page3RevealBox = document.querySelector(
+      ".page3-reveal"
+    ) as HTMLElement;
+
+    if (page3BoxContainer && page3Box && page3RevealBox) {
+      gsap.set(page3BoxContainer, { x: 0 });
+      gsap.set(page3Box, { width: "100%", height: 400 });
+      gsap.set(page3RevealBox, { opacity: 1 }); // Always visible behind
+    }
+
+    function handlePage3Sequence() {
+      const page3BoxContainer = document.querySelector(
+        ".page3-box-container"
+      ) as HTMLElement;
+      const page3Box = document.querySelector(".page3-box") as HTMLElement;
+
+      if (!page3BoxContainer || !page3Box) return;
+
+      if (page3State.current === 0) {
+        // Grow the box
+        isAnimating.current = true;
+        gsap.to(page3Box, {
+          width: "105%",
+          height: 700,
+          duration: 0.8,
+          ease: "power2.out",
+          onComplete: () => {
+            page3State.current = 1;
+            isAnimating.current = false;
+          },
+        });
+      } else if (page3State.current === 1) {
+        // Move entire container left with scale, background, and opacity effects
+        isAnimating.current = true;
+        gsap.to(page3BoxContainer, {
+          x: "-100%",
+          scaleY: 0.3,
+          backgroundColor: "#ffffff",
+          opacity: 0.7,
+          transformOrigin: "center center",
+          duration: 1,
+          ease: "power2.inOut",
+          onComplete: () => {
+            page3State.current = 2;
+            isAnimating.current = false;
+          },
+        });
+      } else if (page3State.current === 2) {
+        // Continue to next page
+        goToSection(currentIndex.current + 1);
+      }
+    }
+
+    function handlePage3Reverse() {
+      const page3BoxContainer = document.querySelector(
+        ".page3-box-container"
+      ) as HTMLElement;
+      const page3Box = document.querySelector(".page3-box") as HTMLElement;
+
+      if (!page3BoxContainer || !page3Box) return;
+
+      if (page3State.current === 2) {
+        // Bring container back from right with reverse effects
+        isAnimating.current = true;
+        gsap.to(page3BoxContainer, {
+          x: 0,
+          scaleY: 1,
+          backgroundColor: "#0E0224", // green-500
+          opacity: 1,
+          transformOrigin: "center center",
+          duration: 1,
+          ease: "power2.inOut",
+          onComplete: () => {
+            page3State.current = 1;
+            isAnimating.current = false;
+          },
+        });
+      } else if (page3State.current === 1) {
+        // Shrink the box back
+        isAnimating.current = true;
+        gsap.to(page3Box, {
+          width: "100%",
+          height: 400,
+          duration: 0.8,
+          ease: "power2.out",
+          onComplete: () => {
+            page3State.current = 0;
+            isAnimating.current = false;
+          },
+        });
+      }
+    }
+
+    function goToSection(index: number) {
+      if (isAnimating.current) return;
+      index = Math.max(0, Math.min(sections.length - 1, index));
+      if (index === currentIndex.current) return;
+
+      // Handle Page 3 special sequence
+      if (currentIndex.current === 2) {
+        if (index > currentIndex.current && page3State.current < 2) {
+          handlePage3Sequence();
+          return;
+        } else if (index < currentIndex.current && page3State.current > 0) {
+          handlePage3Reverse();
+          return;
+        }
+      }
+
+      isAnimating.current = true;
+      const nextSection = sections[index];
+      const currentSection = sections[currentIndex.current];
+
+      // Animate hero-overlay when moving from page 1 to page 2
+      if (currentIndex.current === 0 && index === 1) {
+        const heroOverlay = document.querySelector(
+          ".hero-overlay"
+        ) as HTMLElement;
+        if (heroOverlay) {
+          gsap.to(heroOverlay, {
+            opacity: 1,
+            duration: 0.8,
+            ease: "power2.inOut",
+          });
+        }
+      }
+      // Animate hero-overlay back to 0 when returning to page 1
+      if (index === 0) {
+        const heroOverlay = document.querySelector(
+          ".hero-overlay"
+        ) as HTMLElement;
+        if (heroOverlay) {
+          gsap.to(heroOverlay, {
+            opacity: 0,
+            duration: 0.8,
+            ease: "power2.inOut",
+          });
+        }
+      }
+
+      if (index > currentIndex.current) {
+        // Moving forward - next section slides up from bottom
+        gsap.to(nextSection, {
+          yPercent: 0,
+          duration: 1,
+          ease: "power2.inOut",
+          onComplete: () => {
+            // Animate hero-overlay back to 0 after transition
+            if (currentIndex.current === 0 && index === 1) {
+              const heroOverlay = document.querySelector(
+                ".hero-overlay"
+              ) as HTMLElement;
+              if (heroOverlay) {
+                gsap.to(heroOverlay, {
+                  opacity: 0,
+                  duration: 0.8,
+                  ease: "power2.inOut",
+                });
+              }
+            }
+            isAnimating.current = false;
+            // Reset page 3 state when leaving
+            if (currentIndex.current === 2) {
+              page3State.current = 0;
+              const page3BoxContainer = document.querySelector(
+                ".page3-box-container"
+              ) as HTMLElement;
+              const page3Box = document.querySelector(
+                ".page3-box"
+              ) as HTMLElement;
+              if (page3BoxContainer && page3Box) {
+                gsap.set(page3BoxContainer, { x: 0 });
+                gsap.set(page3Box, { width: "100%", height: 400 });
+              }
+            }
+          },
+        });
+      } else {
+        // Moving backward - current section slides down to bottom
+        gsap.to(currentSection, {
+          yPercent: 100,
+          duration: 1,
+          ease: "power2.inOut",
+          onComplete: () => {
+            isAnimating.current = false;
+          },
+        });
+      }
+
+      currentIndex.current = index;
+    }
+
+    if (window.innerWidth >= 768) {
+      Observer.create({
+        target: window,
+        type: "wheel,touch,pointer",
+        wheelSpeed: -1,
+        onDown: () => goToSection(currentIndex.current - 1),
+        onUp: () => goToSection(currentIndex.current + 1),
+        onPress: () => {
+          if (currentIndex.current === 2 && page3State.current < 2) {
+            handlePage3Sequence();
+          } else {
+            goToSection(currentIndex.current + 1);
+          }
+        },
+        tolerance: 10,
+        preventDefault: true,
+        dragMinimum: 10,
+      });
+    } else {
+      Observer.create({
+        target: window,
+        type: "wheel",
+        wheelSpeed: -1,
+        onDown: () => goToSection(currentIndex.current - 1),
+        onUp: () => goToSection(currentIndex.current + 1),
+        onPress: () => {
+          if (currentIndex.current === 2 && page3State.current < 2) {
+            handlePage3Sequence();
+          } else {
+            goToSection(currentIndex.current + 1);
+          }
+        },
+        tolerance: 10,
+        preventDefault: true,
+        dragMinimum: 10,
+      });
+    }
+
+    return () => {
+      Observer.getAll().forEach((obs) => obs.kill());
+    };
+  }, []);
+
+  return (
+    <div ref={containerRef} className="relative h-screen overflow-hidden">
+      {/* Page 1 */}
+      <Container className="panel absolute inset-0 h-screen bg-[url('../assets/hero-bg.svg')] bg-no-repeat bg-center bg-[length:auto_100%] nav-hero-wrapper">
+        <Navbar />
+        <HeroSection />
+        <div className="hero-overlay absolute inset-0 bg-black opacity-0 pointer-events-none"></div>
+      </Container>
+
+      {/* Page 2 */}
+      <ServicesSection />
+
+      {/* Page 3 - Special page with box animations */}
+      <FeatureHome />
+
+      {/* Page 4 */}
+      {/* portfolio 2 */}
+      <Portfolio2 />
+      {/* Page 5 */}
+      <ContactUs />
     </div>
   );
 }

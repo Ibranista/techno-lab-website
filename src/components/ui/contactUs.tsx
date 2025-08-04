@@ -14,7 +14,7 @@ import Link from "next/link";
 export default function ContactUs() {
   return (
     <Container
-      className="md:h-screen max-md:pb-[15px] pb-8 relative md:overflow-clip max-md:pt-[53px]"
+      className="contact-us panel absolute inset-0 max-md:pb-[15px] pb-8 md:overflow-clip max-md:pt-[53px] bg-[#0E0224] text-white flex flex-col gap-y-[36.33px] lg:h-screen pt-[87px] rounded-tl-[60px] rounded-tr-[60px]"
       // style={{
       //   backgroundImage: `url(${contactUsBg.src})`,
       //   backgroundPosition: "right",
@@ -197,7 +197,7 @@ export default function ContactUs() {
                   })}
                   <button
                     type="submit"
-                    className="ml-auto max-w-[200px] pl-[44px] flex justify-between items-center gap-x-[18px]  overflow-hidden rounded-full bg-white border border-white"
+                    className="ml-auto max-w-[200px] pl-[44px] flex justify-between items-center gap-x-[18px]  overflow-hidden rounded-full bg-white border border-white group"
                   >
                     <Typography
                       type="sub"
@@ -212,6 +212,7 @@ export default function ContactUs() {
                         alt="arrow"
                         width={16}
                         height={16}
+                        className="transition-transform duration-300 group-hover:rotate-45"
                       />
                     </article>
                   </button>

@@ -1,7 +1,7 @@
 export const hero_content = {
-  title: "Where Mobile Content Becomes a Competititve Edge",
-  desc: "At Technolab, we empower mobile carriers with cutting-edge content, tailored user experiences, and intelligent insights — unlocking new revenue streams and customer engagement opportunities.",
-  abt: "Delivering impact through innovation, personalization, and data.",
+  title: "Where Innovation Meets Market Impact.",
+  desc: "Bridging Code & Connectivity – Smarter Software for Stronger Markets.",
+  abt: "End-to-end software solutions and VAS platforms for telecoms & enterprises – engineered to outperform.",
   experience: [
     {
       years: "5",

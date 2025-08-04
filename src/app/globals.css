@@ -15,6 +15,15 @@
   /* Fully visible on hover */
 }
 
+.panel:not(:first-child) {
+  visibility: hidden;
+}
+
+/* optional: ensures no flicker before JS */
+body.js-loaded .panel {
+  visibility: visible;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -55,6 +64,12 @@
   body {
     background: #0E0224;
     overflow-x: hidden;
+  }
+
+  /* scroll class */
+  .scroll-triggering-absolute {
+    @apply absolute inset-0;
+    transform: translateY(100%);
   }
 
   .basic-container {
@@ -203,3 +218,16 @@ backdrop-filter: blur(2px); */
   right: calc(29.17% - 1182px/2 + 484px);
   bottom: calc(50% - 510px/2 - 398.86px);
 }
+
+
+/* ::-webkit-scrollbar {
+  display: None
+}
+
+::-webkit-scrollbar-track {
+  display: none;
+}
+
+::-webkit-scrollbar-thumb {
+  display: none;
+} */
