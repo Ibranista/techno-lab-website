@@ -6,11 +6,8 @@ import { Typography } from "../Typography";
 import Link from "next/link";
 import Image from "next/image";
 import icon from "@/assets/services/arrow-right.svg";
-import hoveredRocket from "@/assets/services/hovered-rocket.png";
 import rocketBg from "@/assets/services/services-bg-vector.svg";
 import { motion } from "framer-motion";
-import { Splide, SplideSlide } from "@splidejs/react-splide";
-import "@splidejs/react-splide/css"; // or /css/core if you want no theme
 import Marquee from "react-fast-marquee";
 // Animation variants
 const fadeInVariant = {
@@ -28,7 +25,13 @@ const slideUpVariant2 = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.8, delay: 1.5 } },
 };
 
-export const ServicesSection = () => {
+interface IServicesSectionProps {
+  handleClick: (index: number) => void;
+}
+
+export const ServicesSection = ({
+  handleClick: handleNavClick,
+}: IServicesSectionProps) => {
   return (
     <Container className="panel absolute inset-0 scrll-triggering-absolute services-section flex flex-col gap-y-[36.33px] lg:h-screen pt-[87px] pb-[86px] bg-[#0E0224] rounded-tl-[60px] rounded-tr-[60px] justify-around">
       {/* Header Animation */}
@@ -60,7 +63,8 @@ export const ServicesSection = () => {
             <Typography
               type="sub"
               size="small"
-              className="py-3 text-sm font-semibold primary"
+              className="ignore-me py-3 text-sm font-semibold primary"
+              onClick={() => handleNavClick(4)}
             >
               {services_content.btn_name}
             </Typography>

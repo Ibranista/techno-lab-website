@@ -3,13 +3,9 @@
 import { contact_content } from "@/content/contactUs.content";
 import { Container } from "../container";
 import { Typography } from "../Typography";
-import contactUsBg from "@/assets/contact-us/bg-blur.svg";
 import Image from "next/image";
-import { Footer } from "../footer";
 import { footer_content } from "@/content/footer.content";
 import icon from "@/assets/services/arrow-right.svg";
-
-import Link from "next/link";
 
 export default function ContactUs() {
   return (
@@ -22,7 +18,10 @@ export default function ContactUs() {
       //   backgroundRepeat: "no-repeat",
       // }}
     >
-      <Container className="basic-container absolute inset-0 main-contact-bg" />
+      <Container
+        className="basic-container absolute inset-0 main-contact-bg z-0"
+        style={{ willChange: "transform, opacity" }}
+      />{" "}
       <Container className="flex justify-between gap-x-[165px] items-center basic-container h-full max-md:flex-wrap max-md:gap-x-0">
         {/* left side */}
         <Container

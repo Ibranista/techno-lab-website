@@ -7,7 +7,7 @@ import Portfolio1 from "./portfolio1";
 
 const FeatureHome = () => {
   return (
-    <Container className="panel absolute inset-0 bg-[#0E0224] text-white overflow-hidden rounded-3xl">
+    <Container className="panel absolute inset-0 bg-[#0E0224] text-white overflow-hidden rounded-tl-[60px] rounded-tr-[60px]">
       {/* Reveal box (always behind, full screen) */}
       <div className="page3-reveal absolute inset-0 bg-gradient-to-br  flex items-center justify-center">
         <Portfolio1 />
@@ -21,15 +21,14 @@ const FeatureHome = () => {
           style={{
             width: "100%",
             height: "400px",
-            // from public folder use featured_image for bg
-            backgroundImage: 'url("/featured_image.png")',
+            backgroundImage: 'url("/featured_image.webp")',
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
         >
           <Container
             as="article"
-            className="basic-container absolute -top-56 left-0 rounded-3xl"
+            className="basic-container absolute  xl:-top-36 [1537px]:-top-56 left-0 rounded-3xl"
           >
             <Typography
               type="title"
