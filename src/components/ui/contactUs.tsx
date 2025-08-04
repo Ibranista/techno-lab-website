@@ -21,8 +21,7 @@ export default function ContactUs() {
       <Container
         className="basic-container absolute inset-0 main-contact-bg z-0"
         style={{ willChange: "transform, opacity" }}
-      />
-
+      />{" "}
       <Container className="flex justify-between gap-x-[165px] items-center basic-container h-full max-md:flex-wrap max-md:gap-x-0">
         {/* left side */}
         <Container
@@ -94,9 +93,7 @@ export default function ContactUs() {
               position: "relative",
               width: "100%",
               height: "100%",
-              borderRadius: "30px",
-              overflow: "hidden",
-              willChange: "transform, opacity",
+              maxHeight: "570px",
             }}
           >
             <svg
