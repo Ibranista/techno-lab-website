@@ -66,6 +66,14 @@ body.js-loaded .panel {
     overflow-x: hidden;
   }
 
+  .panel:not(:first-child) {
+    visibility: hidden
+  }
+
+  body.js-loaded .panel {
+    visibility: visible;
+  }
+
   /* scroll class */
   .scroll-triggering-absolute {
     @apply absolute inset-0;

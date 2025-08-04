@@ -9,7 +9,11 @@ export const nav_content = [
   },
   {
     label: "Works",
-    link: "works",
+    link: "features",
+  },
+  {
+    label: "Portfolio",
+    link: "portfolio",
   },
   {
     label: "Contact",

@@ -10,7 +10,15 @@ import { CloseIcon, HumIcon } from "@/assets/icons";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
-export default function Navbar() {
+interface INavbarProps {
+  handleClick: (index: number) => void;
+  isFeatureHomeVisible?: boolean;
+}
+
+export default function Navbar({
+  handleClick: handleNavClick,
+  isFeatureHomeVisible,
+}: INavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -19,30 +27,34 @@ export default function Navbar() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay: 1, duration: 2 }}
-      className={`${font_accent.className} flex items-center justify-between py-7 px-0 lg:px-0`}
+      className={`${font_accent.className} ignore-me fixed top-0 left-0 right-0 flex items-center justify-between py-7 z-50 `}
     >
       {/* Logo */}
-      <section className="flex items-center">
+      <section className="flex items-center ">
         <Image
           src={logo.src}
           alt="TECHNOLAB"
           width={157}
           height={33}
-          className="h-[33px] max-w-[172.5px] w-full"
+          className={`h-[33px] max-w-[172.5px] w-full transition-opacity duration-500 ${
+            isFeatureHomeVisible ? "opacity-0" : "opacity-100"
+          }`}
         />
       </section>
 
       {/* Desktop Navigation */}
       <article className="hidden md:flex space-x-[30px]">
-        {nav_content.map((item, index) => (
-          <Link
-            key={index}
-            href={item.link}
-            className="hover:text-gray-300  text-white font-medium text-[14px]"
-          >
-            {item.label}
-          </Link>
-        ))}
+        {nav_content.map((item, index) =>
+          index === 3 ? null : (
+            <button
+              key={index}
+              onClick={() => handleNavClick(index)}
+              className="hover:text-gray-300 text-white font-medium text-[14px]"
+            >
+              {item.label}
+            </button>
+          )
+        )}
       </article>
 
       {/* Mobile Hamburger Button */}

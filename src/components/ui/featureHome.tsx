@@ -28,7 +28,7 @@ const FeatureHome = () => {
         >
           <Container
             as="article"
-            className="basic-container absolute -top-56 left-0 rounded-3xl"
+            className="basic-container absolute  xl:-top-36 [1537px]:-top-56 left-0 rounded-3xl"
           >
             <Typography
               type="title"

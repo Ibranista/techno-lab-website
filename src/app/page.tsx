@@ -1,23 +1,24 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { Observer } from "gsap/Observer";
 import FeatureHome from "@/components/ui/featureHome";
 import { Container } from "@/components/container";
-import Navbar from "@/components/ui/navbar";
 import { HeroSection } from "@/components/ui/heroSection";
 import { ServicesSection } from "@/components/ui/servicesSection";
 import Portfolio2 from "@/components/ui/portfolio2";
 import ContactUs from "@/components/ui/contactUs";
+import Navbar from "@/components/ui/navbar";
 
 gsap.registerPlugin(Observer);
 
-export default function Home() {
+export default function Test2() {
   const containerRef = useRef<HTMLDivElement>(null);
   const currentIndex = useRef(0);
   const isAnimating = useRef(false);
   const page3State = useRef(0); // 0: initial, 1: box grown, 2: box moved left
+  const [isFeatureHomeVisible, setIsFeatureHomeVisible] = React.useState(false);
 
   useEffect(() => {
     const sections = gsap.utils.toArray(".panel") as HTMLElement[];
@@ -91,7 +92,7 @@ export default function Home() {
         });
       } else if (page3State.current === 2) {
         // Continue to next page
-        goToSection(currentIndex.current + 1);
+        goToSection(currentIndex.current + 1, false);
       }
     }
 
@@ -135,10 +136,13 @@ export default function Home() {
       }
     }
 
-    function goToSection(index: number) {
+    function goToSection(index: number, isNavClick = false) {
       if (isAnimating.current) return;
       index = Math.max(0, Math.min(sections.length - 1, index));
       if (index === currentIndex.current) return;
+
+      // Update feature home visibility
+      setIsFeatureHomeVisible(index === 2);
 
       // Handle Page 3 special sequence
       if (currentIndex.current === 2) {
@@ -155,56 +159,25 @@ export default function Home() {
       const nextSection = sections[index];
       const currentSection = sections[currentIndex.current];
 
-      // Animate hero-overlay when moving from page 1 to page 2
-      if (currentIndex.current === 0 && index === 1) {
-        const heroOverlay = document.querySelector(
-          ".hero-overlay"
-        ) as HTMLElement;
-        if (heroOverlay) {
-          gsap.to(heroOverlay, {
-            opacity: 1,
-            duration: 0.8,
-            ease: "power2.inOut",
-          });
-        }
-      }
-      // Animate hero-overlay back to 0 when returning to page 1
-      if (index === 0) {
-        const heroOverlay = document.querySelector(
-          ".hero-overlay"
-        ) as HTMLElement;
-        if (heroOverlay) {
-          gsap.to(heroOverlay, {
-            opacity: 0,
-            duration: 0.8,
-            ease: "power2.inOut",
-          });
-        }
-      }
+      if (isNavClick) {
+        // Navigation click behavior - both sections move simultaneously
+        const direction = index > currentIndex.current ? 1 : -1;
 
-      if (index > currentIndex.current) {
-        // Moving forward - next section slides up from bottom
-        gsap.to(nextSection, {
-          yPercent: 0,
-          duration: 1,
-          ease: "power2.inOut",
+        // Ensure next section is in the right starting position
+        gsap.set(nextSection, { yPercent: direction * 100 });
+
+        // Create timeline for simultaneous movement
+        const tl = gsap.timeline({
           onComplete: () => {
-            // Animate hero-overlay back to 0 after transition
-            if (currentIndex.current === 0 && index === 1) {
-              const heroOverlay = document.querySelector(
-                ".hero-overlay"
-              ) as HTMLElement;
-              if (heroOverlay) {
-                gsap.to(heroOverlay, {
-                  opacity: 0,
-                  duration: 0.8,
-                  ease: "power2.inOut",
-                });
+            // Reset all non-visible sections to be below viewport for scroll consistency
+            sections.forEach((section, i) => {
+              if (i !== index) {
+                gsap.set(section, { yPercent: 100 });
               }
-            }
-            isAnimating.current = false;
-            // Reset page 3 state when leaving
-            if (currentIndex.current === 2) {
+            });
+
+            // Reset page 3 state when leaving via nav click
+            if (currentIndex.current === 2 && index !== 2) {
               page3State.current = 0;
               const page3BoxContainer = document.querySelector(
                 ".page3-box-container"
@@ -213,75 +186,168 @@ export default function Home() {
                 ".page3-box"
               ) as HTMLElement;
               if (page3BoxContainer && page3Box) {
-                gsap.set(page3BoxContainer, { x: 0 });
+                gsap.set(page3BoxContainer, {
+                  x: 0,
+                  scaleY: 1,
+                  backgroundColor: "#0E0224",
+                  opacity: 1,
+                });
                 gsap.set(page3Box, { width: "100%", height: 400 });
               }
             }
-          },
-        });
-      } else {
-        // Moving backward - current section slides down to bottom
-        gsap.to(currentSection, {
-          yPercent: 100,
-          duration: 1,
-          ease: "power2.inOut",
-          onComplete: () => {
+
             isAnimating.current = false;
           },
         });
+
+        // Move next section into view
+        tl.to(nextSection, {
+          yPercent: 0,
+          duration: 1,
+          ease: "power2.inOut",
+        });
+
+        // Move current section out of view
+        tl.to(
+          currentSection,
+          {
+            yPercent: -direction * 100,
+            duration: 1,
+            ease: "power2.inOut",
+          },
+          0 // Start at the same time
+        );
+      } else {
+        // Scroll/touch behavior - stacking effect
+        // Animate hero-overlay when moving from page 1 to page 2
+        if (currentIndex.current === 0 && index === 1) {
+          const heroOverlay = document.querySelector(
+            ".hero-overlay"
+          ) as HTMLElement;
+          if (heroOverlay) {
+            gsap.to(heroOverlay, {
+              opacity: 1,
+              duration: 0.8,
+              ease: "power2.inOut",
+            });
+          }
+        }
+
+        // Animate hero-overlay back to 0 when returning to page 1
+        if (index === 0) {
+          const heroOverlay = document.querySelector(
+            ".hero-overlay"
+          ) as HTMLElement;
+          if (heroOverlay) {
+            gsap.to(heroOverlay, {
+              opacity: 0,
+              duration: 0.8,
+              ease: "power2.inOut",
+            });
+          }
+        }
+
+        if (index > currentIndex.current) {
+          // Moving forward - next section slides up from bottom
+          gsap.set(nextSection, { yPercent: 100 });
+          gsap.to(nextSection, {
+            yPercent: 0,
+            duration: 1,
+            ease: "power2.inOut",
+            onComplete: () => {
+              // Animate hero-overlay back to 0 after transition
+              if (currentIndex.current === 0 && index === 1) {
+                const heroOverlay = document.querySelector(
+                  ".hero-overlay"
+                ) as HTMLElement;
+                if (heroOverlay) {
+                  gsap.to(heroOverlay, {
+                    opacity: 0,
+                    duration: 0.8,
+                    ease: "power2.inOut",
+                  });
+                }
+              }
+              isAnimating.current = false;
+              // Reset page 3 state when leaving
+              if (currentIndex.current === 2) {
+                page3State.current = 0;
+                const page3BoxContainer = document.querySelector(
+                  ".page3-box-container"
+                ) as HTMLElement;
+                const page3Box = document.querySelector(
+                  ".page3-box"
+                ) as HTMLElement;
+                if (page3BoxContainer && page3Box) {
+                  gsap.set(page3BoxContainer, { x: 0 });
+                  gsap.set(page3Box, { width: "100%", height: 400 });
+                }
+              }
+            },
+          });
+        } else {
+          // Moving backward - current section slides down to bottom
+          gsap.set(nextSection, { yPercent: 0 }); // Ensure target section is visible
+          gsap.to(currentSection, {
+            yPercent: 100,
+            duration: 1,
+            ease: "power2.inOut",
+            onComplete: () => {
+              isAnimating.current = false;
+            },
+          });
+        }
       }
 
       currentIndex.current = index;
     }
 
-    if (window.innerWidth >= 768) {
-      Observer.create({
-        target: window,
-        type: "wheel,touch,pointer",
-        wheelSpeed: -1,
-        onDown: () => goToSection(currentIndex.current - 1),
-        onUp: () => goToSection(currentIndex.current + 1),
-        onPress: () => {
-          if (currentIndex.current === 2 && page3State.current < 2) {
-            handlePage3Sequence();
-          } else {
-            goToSection(currentIndex.current + 1);
-          }
-        },
-        tolerance: 10,
-        preventDefault: true,
-        dragMinimum: 10,
-      });
-    } else {
-      Observer.create({
-        target: window,
-        type: "wheel",
-        wheelSpeed: -1,
-        onDown: () => goToSection(currentIndex.current - 1),
-        onUp: () => goToSection(currentIndex.current + 1),
-        onPress: () => {
-          if (currentIndex.current === 2 && page3State.current < 2) {
-            handlePage3Sequence();
-          } else {
-            goToSection(currentIndex.current + 1);
-          }
-        },
-        tolerance: 10,
-        preventDefault: true,
-        dragMinimum: 10,
-      });
+    // Navigation function for nav links
+    function navigateToSection(index: number) {
+      goToSection(index, true); // true = nav click behavior
     }
+    // Expose navigation function globally for nav links
+    (window as any).navigateToSection = navigateToSection;
+
+    Observer.create({
+      target: window,
+      type: "wheel,touch,pointer",
+      wheelSpeed: -1,
+      onDown: () => goToSection(currentIndex.current - 1, false),
+      onUp: () => goToSection(currentIndex.current + 1, false),
+      onPress: () => {
+        if (currentIndex.current === 2 && page3State.current < 2) {
+          handlePage3Sequence();
+        } else {
+          goToSection(currentIndex.current + 1, false);
+        }
+      },
+      ignore: ".ignore-me",
+      tolerance: 10,
+      preventDefault: true,
+      dragMinimum: 10,
+    });
 
     return () => {
       Observer.getAll().forEach((obs) => obs.kill());
+      delete (window as any).navigateToSection;
     };
   }, []);
 
+  const handleNavClick = (index: number) => {
+    if ((window as any).navigateToSection) {
+      (window as any).navigateToSection(index);
+    }
+  };
+
   return (
     <div ref={containerRef} className="relative h-screen overflow-hidden">
+      <Navbar
+        handleClick={handleNavClick}
+        isFeatureHomeVisible={isFeatureHomeVisible}
+      />
       {/* Page 1 */}
       <Container className="panel absolute inset-0 h-screen bg-[url('../assets/hero-bg.svg')] bg-no-repeat bg-center bg-[length:auto_100%] nav-hero-wrapper">
-        <Navbar />
         <HeroSection />
         <div
           className="hero-overlay absolute inset-0 bg-black opacity-0 pointer-events-none z-10"
@@ -292,12 +358,12 @@ export default function Home() {
       {/* Page 2 */}
       <ServicesSection />
 
-      {/* Page 3 - Special page with box animations */}
+      {/* Page 3 */}
       <FeatureHome />
 
       {/* Page 4 */}
-      {/* portfolio 2 */}
       <Portfolio2 />
+
       {/* Page 5 */}
       <ContactUs />
     </div>
