@@ -9,7 +9,9 @@ import icon from "@/assets/services/arrow-right.svg";
 import hoveredRocket from "@/assets/services/hovered-rocket.png";
 import rocketBg from "@/assets/services/services-bg-vector.svg";
 import { motion } from "framer-motion";
-
+import { Splide, SplideSlide } from "@splidejs/react-splide";
+import "@splidejs/react-splide/css"; // or /css/core if you want no theme
+import Marquee from "react-fast-marquee";
 // Animation variants
 const fadeInVariant = {
   hidden: { opacity: 0 },
@@ -28,7 +30,7 @@ const slideUpVariant2 = {
 
 export const ServicesSection = () => {
   return (
-    <Container className="panel absolute inset-0 scrll-triggering-absolute services-section flex flex-col gap-y-[36.33px] lg:h-screen pt-[87px] pb-[86px] bg-[#0E0224] rounded-tl-[60px] rounded-tr-[60px]">
+    <Container className="panel absolute inset-0 scrll-triggering-absolute services-section flex flex-col gap-y-[36.33px] lg:h-screen pt-[87px] pb-[86px] bg-[#0E0224] rounded-tl-[60px] rounded-tr-[60px] justify-around">
       {/* Header Animation */}
       <motion.article
         className="services-header-wrapper"
@@ -152,56 +154,19 @@ export const ServicesSection = () => {
           >
             {services_content.trusted_by}
           </Typography>
-          <Container className="basic-container flex gap-x-[37.55px] mt-[37.95px]">
-            <div className="relative w-full overflow-hidden">
-              {/* Carousel track */}
-              <div
-                className="flex gap-x-[37.55px] animate-carousel"
-                style={{
-                  width: "max-content",
-                  animation: "carousel-scroll 20s linear infinite",
-                }}
-              >
-                {services_content.trusting_companies.map((company, index) =>
-                  Array.from({ length: 15 }).map((_, i) => (
-                    <Image
-                      key={index + "-" + i}
-                      src={company.logo}
-                      alt={company.name}
-                      width={200}
-                      height={100}
-                      className="w-[148.08px] h-[29.32px]"
-                    />
-                  ))
-                )}
-              </div>
-              {/* Left gradient cover */}
-              <div
-                className="absolute left-0 top-0 h-full pointer-events-none w-[188.87px]"
-                style={{
-                  background:
-                    "linear-gradient(270deg, #0E0224 0%, rgba(14, 2, 36, 0.4) 100%)",
-                  zIndex: 2,
-                  transform: "matrix(-1, 0, 0, 1, 0, 0)",
-                }}
-              ></div>
-              {/* Right gradient cover */}
-              <div
-                className="absolute right-0 top-0 h-full w-[80px] pointer-events-none"
-                style={{
-                  background:
-                    "linear-gradient(270deg, #0E0224 0%, rgba(14, 2, 36, 0.4) 100%)",
-                  zIndex: 2,
-                }}
-              ></div>
-              {/* Carousel keyframes */}
-              <style>{`
-                @keyframes carousel-scroll {
-                  0% { transform: translateX(0); }
-                  100% { transform: translateX(-50%); }
-                }
-              `}</style>
-            </div>
+          <Container className="basic-container flex mt-[37.95px]">
+            <Marquee speed={30} gradient={false} pauseOnHover={false}>
+              {services_content.trusting_companies.map((company, index) => (
+                <Image
+                  key={index}
+                  src={company.logo}
+                  alt={company.name}
+                  width={148}
+                  height={30}
+                  className="mx-[18px]"
+                />
+              ))}
+            </Marquee>
           </Container>
         </Container>
       </motion.div>

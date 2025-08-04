@@ -29,7 +29,7 @@ const FeatureHome = () => {
         >
           <Container
             as="article"
-            className="basic-container absolute -top-32 left-0 rounded-3xl"
+            className="basic-container absolute -top-56 left-0 rounded-3xl"
           >
             <Typography
               type="title"
