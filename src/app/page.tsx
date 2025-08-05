@@ -1,12 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
-
-declare global {
-  interface Window {
-    navigateToSection?: (index: number) => void;
-  }
-}
+import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { Observer } from "gsap/Observer";
 import FeatureHome from "@/components/ui/featureHome";
@@ -24,7 +18,6 @@ export default function Test2() {
   const currentIndex = useRef(0);
   const isAnimating = useRef(false);
   const page3State = useRef(0); // 0: initial, 1: box grown, 2: box moved left
-  const [isFeatureHomeVisible, setIsFeatureHomeVisible] = React.useState(false);
 
   useEffect(() => {
     const sections = gsap.utils.toArray(".panel") as HTMLElement[];
@@ -57,6 +50,40 @@ export default function Test2() {
       gsap.set(page3BoxContainer, { x: 0 });
       gsap.set(page3Box, { width: "100%", height: 400 });
       gsap.set(page3RevealBox, { opacity: 1 }); // Always visible behind
+    }
+
+    // Function to update navigation background with smooth animation
+    function updateNavBackground(index: number) {
+      const nav = document.querySelector(".dynamic-nav") as HTMLElement;
+      const navButtons = document.querySelectorAll(
+        ".nav-button"
+      ) as NodeListOf<HTMLElement>;
+
+      if (nav) {
+        if (index === 2) {
+          // Feature page - animate to orange background
+          gsap.to(nav, {
+            // opacity: 0,
+            duration: 0.6,
+            ease: "power2.out",
+          });
+        } else {
+          // All other pages - animate to default background
+          gsap.to(nav, {
+            // opacity: 1,
+            duration: 0.6,
+            ease: "power2.out",
+          });
+          // Animate text color to white
+          navButtons.forEach((button) => {
+            gsap.to(button, {
+              color: "rgb(255 255 255)",
+              duration: 0.6,
+              ease: "power2.out",
+            });
+          });
+        }
+      }
     }
 
     function handlePage3Sequence() {
@@ -147,11 +174,8 @@ export default function Test2() {
       index = Math.max(0, Math.min(sections.length - 1, index));
       if (index === currentIndex.current) return;
 
-      // Update feature home visibility
-      setIsFeatureHomeVisible(index === 2);
-
-      // Handle Page 3 special sequence
-      if (currentIndex.current === 2) {
+      // Handle Page 3 special sequence - only for scroll/touch, not nav clicks
+      if (currentIndex.current === 2 && !isNavClick) {
         if (index > currentIndex.current && page3State.current < 2) {
           handlePage3Sequence();
           return;
@@ -172,7 +196,7 @@ export default function Test2() {
         // Ensure next section is in the right starting position
         gsap.set(nextSection, { yPercent: direction * 100 });
 
-        // Create timeline for simultaneous movement
+        // Create timeline for simultaneous movement with smoother easing
         const tl = gsap.timeline({
           onComplete: () => {
             // Reset all non-visible sections to be below viewport for scroll consistency
@@ -182,8 +206,8 @@ export default function Test2() {
               }
             });
 
-            // Reset page 3 state when leaving via nav click
-            if (currentIndex.current === 2 && index !== 2) {
+            // Always reset page 3 state when navigating via nav click
+            if (currentIndex.current === 2 || index === 2) {
               page3State.current = 0;
               const page3BoxContainer = document.querySelector(
                 ".page3-box-container"
@@ -202,24 +226,41 @@ export default function Test2() {
               }
             }
 
+            // Smoothly animate hero overlay when navigating to home via nav click
+            if (index === 0) {
+              const heroOverlay = document.querySelector(
+                ".hero-overlay"
+              ) as HTMLElement;
+              if (heroOverlay) {
+                gsap.to(heroOverlay, {
+                  opacity: 0,
+                  duration: 0.8,
+                  ease: "power2.out",
+                });
+              }
+            }
+
+            // Update navigation background with animation
+            updateNavBackground(index);
+
             isAnimating.current = false;
           },
         });
 
-        // Move next section into view
+        // Move next section into view with smoother easing
         tl.to(nextSection, {
           yPercent: 0,
-          duration: 1,
-          ease: "power2.inOut",
+          duration: 0.8, // Slightly faster for snappier feel
+          ease: "power3.out", // Smoother easing
         });
 
-        // Move current section out of view
+        // Move current section out of view with smoother easing
         tl.to(
           currentSection,
           {
             yPercent: -direction * 100,
-            duration: 1,
-            ease: "power2.inOut",
+            duration: 0.8, // Slightly faster for snappier feel
+            ease: "power3.out", // Smoother easing
           },
           0 // Start at the same time
         );
@@ -274,8 +315,12 @@ export default function Test2() {
                   });
                 }
               }
+
+              // Update navigation background with animation
+              updateNavBackground(index);
+
               isAnimating.current = false;
-              // Reset page 3 state when leaving
+              // Reset page 3 state when leaving via scroll
               if (currentIndex.current === 2) {
                 page3State.current = 0;
                 const page3BoxContainer = document.querySelector(
@@ -299,6 +344,8 @@ export default function Test2() {
             duration: 1,
             ease: "power2.inOut",
             onComplete: () => {
+              // Update navigation background with animation
+              updateNavBackground(index);
               isAnimating.current = false;
             },
           });
@@ -348,10 +395,7 @@ export default function Test2() {
 
   return (
     <div ref={containerRef} className="relative h-screen overflow-hidden">
-      <Navbar
-        handleClick={handleNavClick}
-        isFeatureHomeVisible={isFeatureHomeVisible}
-      />
+      <Navbar handleClick={handleNavClick} />
       {/* Page 1 */}
       <Container className="panel absolute inset-0 h-screen bg-[url('../assets/hero-bg.svg')] bg-no-repeat bg-center bg-[length:auto_100%] nav-hero-wrapper">
         <HeroSection />
