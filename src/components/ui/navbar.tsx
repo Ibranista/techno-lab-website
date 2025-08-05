@@ -27,10 +27,10 @@ export default function Navbar({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay: 1, duration: 2 }}
-      className={`${font_accent.className} ignore-me fixed top-0 left-0 right-0 flex items-center justify-between py-7 z-50 `}
+      className={`${font_accent.className} ignore-me fixed top-0 left-0 right-0 flex items-center justify-between py-7 z-50 bg-white/0 backdrop-blur-lg border-white/0`}
     >
       {/* Logo */}
-      <section className="flex items-center ">
+      <section className="flex items-center dynamic-nav">
         <Image
           src={logo.src}
           alt="TECHNOLAB"
