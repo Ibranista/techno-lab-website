@@ -36,7 +36,7 @@ export default function Portfolio2() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, ease: "easeOut" }}
       >
-        {!isVideoLoaded && (
+        {/* {!isVideoLoaded && (
           <div className="absolute inset-0 flex flex-col items-center justify-center z-10 bg-black/50">
             <div className="w-16 h-16 relative flex items-center justify-center">
               <span
@@ -70,7 +70,7 @@ export default function Portfolio2() {
               }
             `}</style>
           </div>
-        )}
+        )} */}
         <video
           ref={videoRef}
           src={"/portfolio-item-2.mp4"}
