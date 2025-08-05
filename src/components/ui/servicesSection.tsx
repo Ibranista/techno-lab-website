@@ -149,6 +149,7 @@ export const ServicesSection = ({
         whileInView="visible"
         viewport={{ once: false, amount: 0.3 }}
         variants={slideUpVariant2}
+        className="ignore-me"
       >
         <Container className="trusted_by_wrapper basic-container mt-[90px]">
           <Typography
@@ -159,16 +160,32 @@ export const ServicesSection = ({
             {services_content.trusted_by}
           </Typography>
           <Container className="basic-container flex mt-[37.95px]">
-            <Marquee speed={30} gradient={false} pauseOnHover={false}>
+            <Marquee
+              speed={30}
+              gradient={false}
+              pauseOnHover={false}
+              autoFill={true}
+            >
               {services_content.trusting_companies.map((company, index) => (
-                <Image
+                <span
                   key={index}
-                  src={company.logo}
-                  alt={company.name}
-                  width={148}
-                  height={30}
-                  className="mx-[18px]"
-                />
+                  className="relative mx-[18px] h-11 w-[148px] flex items-center group cursor-pointer"
+                >
+                  <Image
+                    src={company.grayscaleLogo}
+                    alt={company.name}
+                    width={148}
+                    height={30}
+                    className="absolute inset-0 h-11 w-[148px] object-contain transition-opacity duration-300 opacity-100 group-hover:opacity-0"
+                  />
+                  <Image
+                    src={company.logo}
+                    alt={company.name}
+                    width={148}
+                    height={30}
+                    className="absolute inset-0 h-11 w-[148px] object-contain transition-opacity duration-300 opacity-0 group-hover:opacity-100"
+                  />
+                </span>
               ))}
             </Marquee>
           </Container>
