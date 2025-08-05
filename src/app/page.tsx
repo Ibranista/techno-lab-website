@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { Observer } from "gsap/Observer";
@@ -242,7 +241,6 @@ export default function Test2() {
 
             // Update navigation background with animation
             updateNavBackground(index);
-
             isAnimating.current = false;
           },
         });
@@ -318,8 +316,8 @@ export default function Test2() {
 
               // Update navigation background with animation
               updateNavBackground(index);
-
               isAnimating.current = false;
+
               // Reset page 3 state when leaving via scroll
               if (currentIndex.current === 2) {
                 page3State.current = 0;
@@ -359,13 +357,76 @@ export default function Test2() {
     function navigateToSection(index: number) {
       goToSection(index, true); // true = nav click behavior
     }
+
     // Expose navigation function globally for nav links
     window.navigateToSection = navigateToSection;
 
+    // Enhanced scroll handling with touchpad sensitivity fix
+    let lastScrollTime = 0;
+    let scrollAccumulator = 0;
+    let scrollTimeout: NodeJS.Timeout;
+    const scrollThreshold = 900; // Longer cooldown between page changes
+    const deltaThreshold = 100; // Minimum accumulated delta to trigger page change
+
+    const handleWheel = (e: WheelEvent) => {
+      e.preventDefault();
+
+      const now = Date.now();
+
+      // If we're still animating or in cooldown, ignore all scroll events
+      if (isAnimating.current || now - lastScrollTime < scrollThreshold) {
+        return;
+      }
+
+      // Detect if this is likely a touchpad (smaller, more frequent deltas)
+      const isTouchpad = Math.abs(e.deltaY) < 50;
+
+      if (isTouchpad) {
+        // For touchpad: accumulate small deltas until threshold is reached
+        scrollAccumulator += e.deltaY;
+
+        // Clear timeout to reset accumulator if user stops scrolling
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+          scrollAccumulator = 0;
+        }, 150);
+
+        // Only trigger page change when accumulated delta exceeds threshold
+        if (Math.abs(scrollAccumulator) >= deltaThreshold) {
+          const direction = scrollAccumulator > 0 ? 1 : -1;
+
+          if (direction > 0) {
+            goToSection(currentIndex.current + 1, false);
+            lastScrollTime = now;
+            scrollAccumulator = 0;
+          } else if (direction < 0) {
+            goToSection(currentIndex.current - 1, false);
+            lastScrollTime = now;
+            scrollAccumulator = 0;
+          }
+        }
+      } else {
+        // For mouse wheel: immediate response (larger deltas)
+        if (e.deltaY > 0) {
+          goToSection(currentIndex.current + 1, false);
+          lastScrollTime = now;
+        } else if (e.deltaY < 0) {
+          goToSection(currentIndex.current - 1, false);
+          lastScrollTime = now;
+        }
+      }
+    };
+
+    // Add wheel event listener
+    const container = containerRef.current;
+    if (container) {
+      container.addEventListener("wheel", handleWheel, { passive: false });
+    }
+
+    // Keep the original Observer for touch and pointer events
     Observer.create({
       target: window,
-      type: "wheel,touch,pointer",
-      wheelSpeed: -1,
+      type: "touch,pointer", // Remove wheel from here since we handle it separately
       onDown: () => goToSection(currentIndex.current - 1, false),
       onUp: () => goToSection(currentIndex.current + 1, false),
       onPress: () => {
@@ -384,6 +445,10 @@ export default function Test2() {
     return () => {
       Observer.getAll().forEach((obs) => obs.kill());
       delete window.navigateToSection;
+      if (container) {
+        container.removeEventListener("wheel", handleWheel);
+      }
+      clearTimeout(scrollTimeout);
     };
   }, []);
 
@@ -396,6 +461,7 @@ export default function Test2() {
   return (
     <div ref={containerRef} className="relative h-screen overflow-hidden">
       <Navbar handleClick={handleNavClick} />
+
       {/* Page 1 */}
       <Container className="panel absolute inset-0 h-screen bg-[url('../assets/hero-bg.svg')] bg-no-repeat bg-center bg-[length:auto_100%] nav-hero-wrapper">
         <HeroSection />
