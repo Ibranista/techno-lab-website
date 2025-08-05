@@ -17,7 +17,7 @@ const FeatureHome = () => {
       <Container className="page3-box-container py-30px flex-col absolute inset-0 bg-[#0E0224] flex items-center justify-center">
         {/* The actual box */}
         <div
-          className="relative page3-box text-black font-bold rounded-lg shadow-lg flex items-center justify-center text-sm"
+          className="relative page3-box text-black font-bold rounded-lg shadow-lg flex items-center justify-center text-sm mt-10"
           style={{
             width: "100%",
             height: "400px",
@@ -28,7 +28,7 @@ const FeatureHome = () => {
         >
           <Container
             as="article"
-            className="basic-container absolute  xl:-top-36 [1537px]:-top-56 left-0 rounded-3xl"
+            className="basic-container absolute  xl:-top-32 [1537px]:-top-56 left-0 rounded-3xl"
           >
             <Typography
               type="title"
