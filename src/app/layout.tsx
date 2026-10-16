@@ -1,12 +1,49 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
+import { font_accent } from "@/fonts/fonts";
 import "./globals.css";
-import "@/styles/general.css";
-import Head from "next/head";
+
+const description =
+  "Technolab provides cutting-edge IT solutions, services, and digital transformation for businesses. Discover our portfolio and trusted partners.";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://technolab.com"),
   title: "Technolab | Interactive IT Solutions",
-  description:
-    "Technolab provides cutting-edge IT solutions, services, and digital transformation for businesses. Discover our portfolio and trusted partners.",
+  description,
+  keywords: [
+    "IT Solutions",
+    "Digital Transformation",
+    "Technolab",
+    "Portfolio",
+    "Services",
+    "Trusted Partners",
+  ],
+  authors: [{ name: "Technolab" }],
+  openGraph: {
+    type: "website",
+    url: "/",
+    title: "Technolab | Interactive IT Solutions",
+    description,
+    images: ["/featured_image.webp"],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Technolab | Interactive IT Solutions",
+    description,
+    images: ["/featured_image.webp"],
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#0E0224",
+};
+
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "Technolab",
+  url: "https://technolab.com",
+  logo: "https://technolab.com/favicon.ico",
+  description,
 };
 
 export default function RootLayout({
@@ -16,62 +53,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <Head>
-        <link
-          rel="preload"
-          as="image"
-          href="/assets/hero-bg.svg"
-          type="image/svg+xml"
-        />
-        <meta
-          name="description"
-          content="Technolab provides cutting-edge IT solutions, services, and digital transformation for businesses. Discover our portfolio and trusted partners."
-        />
-        <meta
-          name="keywords"
-          content="IT Solutions, Digital Transformation, Technolab, Portfolio, Services, Trusted Partners"
-        />
-        <meta name="author" content="Technolab" />
-        <meta
-          property="og:title"
-          content="Technolab | Interactive IT Solutions"
-        />
-        <meta
-          property="og:description"
-          content="Technolab provides cutting-edge IT solutions, services, and digital transformation for businesses."
-        />
-        <meta property="og:image" content="/featured_image.png" />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://technolab.com" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta
-          name="twitter:title"
-          content="Technolab | Interactive IT Solutions"
-        />
-        <meta
-          name="twitter:description"
-          content="Technolab provides cutting-edge IT solutions, services, and digital transformation for businesses."
-        />
-        <meta name="twitter:image" content="/featured_image.png" />
+      <body className={font_accent.className}>
+        {children}
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Organization",
-              name: "Technolab",
-              url: "https://technolab.com",
-              logo: "/assets/Technolab-Logo.svg",
-              description:
-                "Technolab provides cutting-edge IT solutions, services, and digital transformation for businesses.",
-            }),
-          }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
         />
-      </Head>
-      <body className="scrollbar-hide">
-        {children}
-        {/* <RocketBackground /> */}
-        {/* <DiffSection /> */}
       </body>
     </html>
   );

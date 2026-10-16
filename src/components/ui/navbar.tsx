@@ -1,107 +1,124 @@
 "use client";
 
-import { nav_content } from "@/content/nav.content";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import logo from "@/assets/Technolab-Logo.svg";
-import { Container } from "@/components/container";
-import { font_accent } from "@/fonts/fonts";
 import { CloseIcon, HumIcon } from "@/assets/icons";
-import Link from "next/link";
-import { motion } from "framer-motion";
+import { nav_content } from "@/content/nav.content";
+import { font_accent } from "@/fonts/fonts";
+import { cn } from "@/lib/utils";
+import { useActiveSection } from "@/components/scroller/PageScroller";
 
-interface INavbarProps {
-  handleClick: (index: number) => void;
-  isFeatureHomeVisible?: boolean;
-}
+// "Works" stays highlighted while the portfolio section is showing.
+const navIdFor = (section: string) => (section === "portfolio" ? "works" : section);
 
-export default function Navbar({
-  handleClick: handleNavClick,
-  isFeatureHomeVisible,
-}: INavbarProps) {
+export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const active = navIdFor(useActiveSection());
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setIsOpen(false);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [isOpen]);
 
   return (
-    <Container
-      as={motion.div}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: 1, duration: 2 }}
-      className={`${font_accent.className} ignore-me fixed top-0 left-0 right-0 flex items-center justify-between py-7 z-50 `}
+    <header
+      className={cn(
+        font_accent.className,
+        "animate-fade fixed inset-x-0 top-0 z-50 [--delay:0.3s]",
+        "flow:bg-ink/85 flow:border-b flow:border-white/5",
+      )}
     >
-      {/* Logo */}
-      <section className="flex items-center ">
-        <Image
-          src={logo.src}
-          alt="TECHNOLAB"
-          width={157}
-          height={33}
-          className={`h-[33px] max-w-[172.5px] w-full transition-opacity duration-500 ${
-            isFeatureHomeVisible ? "opacity-0" : "opacity-100"
-          }`}
-        />
-      </section>
+      <nav
+        aria-label="Main"
+        className="mx-auto flex items-center justify-between px-7 py-5 lg:px-[72px] paged:py-7"
+      >
+        <a href="#home" aria-label="Technolab home" className="shrink-0">
+          <Image src={logo} alt="" priority className="h-[30px] w-auto lg:h-[33px]" />
+        </a>
 
-      {/* Desktop Navigation */}
-      <article className="hidden md:flex space-x-[30px]">
-        {nav_content.map((item, index) =>
-          index === 3 ? null : (
-            <button
-              key={index}
-              onClick={() => handleNavClick(index)}
-              className="hover:text-gray-300 text-white font-medium text-[14px]"
-            >
-              {item.label}
-            </button>
-          )
-        )}
-      </article>
+        <ul className="hidden items-center gap-1 rounded-full border border-white/10 bg-white/[0.03] p-1 md:flex">
+          {nav_content.map((item) => {
+            const isActive = item.id === active;
+            return (
+              <li key={item.id}>
+                <a
+                  href={`#${item.id}`}
+                  aria-current={isActive ? "true" : undefined}
+                  className={cn(
+                    "block rounded-full px-4 py-2 text-[14px] font-medium transition-colors duration-300",
+                    isActive
+                      ? "bg-white text-[#260464]"
+                      : "text-white/75 hover:text-white",
+                  )}
+                >
+                  {item.label}
+                </a>
+              </li>
+            );
+          })}
+        </ul>
 
-      {/* Mobile Hamburger Button */}
-      <div className="md:hidden">
         <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="text-gray-500 focus:outline-none cursor-pointer"
+          type="button"
+          onClick={() => setIsOpen(true)}
+          aria-label="Open menu"
+          aria-expanded={isOpen}
+          aria-controls="mobile-menu"
+          className="-mr-2 rounded-full p-2 text-white md:hidden"
         >
           <HumIcon />
         </button>
-      </div>
+      </nav>
 
-      {/* Mobile Sidebar */}
-      <section
-        className={`fixed top-0 right-0 h-full w-64 bg-white shadow-xl transform ${
-          isOpen ? "translate-x-0" : "translate-x-full"
-        } transition-transform duration-300 ease-in-out z-50 md:hidden`}
+      {/* Mobile menu */}
+      <div
+        aria-hidden
+        onClick={() => setIsOpen(false)}
+        className={cn(
+          "fixed inset-0 bg-black/60 transition-opacity duration-300 md:hidden",
+          isOpen ? "opacity-100" : "pointer-events-none opacity-0",
+        )}
+      />
+      <div
+        id="mobile-menu"
+        inert={!isOpen}
+        className={cn(
+          "fixed inset-y-0 right-0 flex w-72 max-w-[85vw] flex-col border-l border-white/10 bg-ink-raised p-6 shadow-2xl",
+          "transition-transform duration-500 ease-out-expo md:hidden",
+          isOpen ? "translate-x-0" : "translate-x-full",
+        )}
       >
-        <div className="flex justify-end p-4">
-          <button
-            onClick={() => setIsOpen(false)}
-            className="text-gray-500 hover:text-gray-700 focus:outline-none"
-          >
-            <CloseIcon />
-          </button>
-        </div>
-        <article className="flex flex-col p-6 space-y-6">
-          {nav_content.map((item, index) => (
-            <a
-              key={index}
-              href={item.link}
-              onClick={() => setIsOpen(false)}
-              className="text-lg font-medium text-gray-800 hover:text-gray-500 transition-colors duration-200"
-            >
-              {item.label}
-            </a>
-          ))}
-        </article>
-      </section>
-
-      {/* Overlay when sidebar is open */}
-      {isOpen && (
-        <div
-          className="fixed inset-0 bg-gray-900 opacity-30 bg-opacity-50 z-40 md:hidden"
+        <button
+          type="button"
           onClick={() => setIsOpen(false)}
-        />
-      )}
-    </Container>
+          aria-label="Close menu"
+          className="-mr-2 self-end rounded-full p-2 text-white/70 hover:text-white"
+        >
+          <CloseIcon />
+        </button>
+        <ul className="mt-8 flex flex-col gap-2">
+          {nav_content.map((item) => (
+            <li key={item.id}>
+              <a
+                href={`#${item.id}`}
+                onClick={() => setIsOpen(false)}
+                aria-current={item.id === active ? "true" : undefined}
+                className={cn(
+                  "block rounded-xl px-4 py-3 text-lg font-medium transition-colors",
+                  item.id === active
+                    ? "bg-white/10 text-white"
+                    : "text-white/70 hover:bg-white/5 hover:text-white",
+                )}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </header>
   );
 }
