@@ -12,31 +12,33 @@ export const contact_content = {
       image: messageIcon,
       desc: "Our friendly team is here to help.",
       value: "Hello@technolabet.com",
+      href: "mailto:Hello@technolabet.com",
     },
     {
       type: "Visit us",
       image: locationIcon,
       desc: "Come say hello at our HQ",
       value: "AG Grace Plaza, 6th floor, 22 Bole",
+      href: undefined,
     },
     {
       type: "Call us on",
       image: phoneIcon,
       desc: "Monday – Friday 9am to 5pm",
       value: "+251",
+      href: undefined,
     },
   ],
   form: {
     title: "Send a message",
     fields: [
-      { name: "Your Name", type: "text" },
-      { name: "Your Email", type: "email" },
-      { name: "Subject", type: "text" },
-      { name: "Message", type: "textarea" },
+      { name: "name", label: "Your Name", type: "text", autoComplete: "name" },
+      { name: "email", label: "Your Email", type: "email", autoComplete: "email" },
+      { name: "subject", label: "Subject", type: "text", autoComplete: "off" },
+      { name: "message", label: "Message", type: "textarea", autoComplete: "off" },
     ],
     button: {
       label: "Send Message",
-      icon: "/images/contact/send-icon.png",
     },
   },
 };

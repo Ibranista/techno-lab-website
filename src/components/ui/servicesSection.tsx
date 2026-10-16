@@ -1,179 +1,94 @@
-"use client";
-
-import { services_content } from "@/content/services.content";
-import { Container } from "../container";
-import { Typography } from "../Typography";
-import Link from "next/link";
 import Image from "next/image";
-import icon from "@/assets/services/arrow-right.svg";
-import rocketBg from "@/assets/services/services-bg-vector.svg";
-import { motion } from "framer-motion";
-import Marquee from "react-fast-marquee";
-// Animation variants
-const fadeInVariant = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 0.8, delay: 1 } },
-};
+import { services_content } from "@/content/services.content";
+import { Panel } from "../panel";
+import { Typography } from "../Typography";
+import { ArrowButton } from "./arrowButton";
 
-const slideUpVariant = {
-  hidden: { opacity: 0, y: 60 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.8, delay: 1.3 } },
-};
-
-const slideUpVariant2 = {
-  hidden: { opacity: 0, y: 60 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.8, delay: 1.5 } },
-};
-
-interface IServicesSectionProps {
-  handleClick: (index: number) => void;
-}
-
-export const ServicesSection = ({
-  handleClick: handleNavClick,
-}: IServicesSectionProps) => {
+export const ServicesSection = () => {
   return (
-    <Container className="panel absolute inset-0 scrll-triggering-absolute services-section flex flex-col gap-y-[36.33px] lg:h-screen pt-[87px] pb-[86px] bg-[#0E0224] rounded-tl-[60px] rounded-tr-[60px] justify-around">
-      {/* Header Animation */}
-      <motion.article
-        className="services-header-wrapper"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: false, amount: 0.5 }}
-        variants={fadeInVariant}
-      >
-        <Typography type="title" size="large" className="hero-title-gradient">
-          {services_content.title}
-        </Typography>
-        <Container
-          as="article"
-          className="px-0 py-0 lg:px-0 flex justify-between"
-        >
-          <Typography
-            type="sub"
-            size="sub-desc"
-            className="text-base-70 max-w-[415px]"
-          >
-            {services_content.desc}
-          </Typography>
-          <Link
-            href="#"
-            className="pl-[30px] inline-flex items-center gap-x-[19.97px] overflow-hidden rounded-full bg-white border border-white group"
-          >
+    <Panel id="services" label="Services">
+      <div className="flex flex-col gap-12 px-7 pt-24 pb-16 lg:px-[72px] paged:h-full paged:justify-center paged:gap-[clamp(2rem,6vh,4rem)] paged:pt-24 paged:pb-10">
+        <header className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+          <div className="grid gap-3">
+            <Typography
+              as="h2"
+              type="title"
+              size="large"
+              className="hero-title-gradient"
+              data-reveal
+            >
+              {services_content.title}
+            </Typography>
             <Typography
               type="sub"
-              size="small"
-              className="ignore-me py-3 text-sm font-semibold primary"
-              onClick={() => handleNavClick(4)}
+              size="sub-desc"
+              className="max-w-[415px] text-base-70"
+              data-reveal
             >
-              {services_content.btn_name}
+              {services_content.desc}
             </Typography>
-            <span className="flex h-10 w-10 items-center justify-center rounded-full btn-gradient">
-              <Image
-                src={icon.src}
-                alt="arrow"
-                width={16}
-                height={16}
-                className="transition-transform duration-300 group-hover:rotate-45"
-              />
-            </span>
-          </Link>
-        </Container>
-      </motion.article>
+          </div>
+          <div data-reveal className="shrink-0">
+            <ArrowButton href="#contact">{services_content.btn_name}</ArrowButton>
+          </div>
+        </header>
 
-      {/* Services Wrapper Animation */}
-      <motion.div
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: false, amount: 0.3 }}
-        variants={slideUpVariant}
-      >
-        <Container
-          as="article"
-          className="services_wrapper px-0 lg:px-0 py-0 md:grid flex flex-wrap md:grid-cols-2 xl:grid-cols-3 gap-[28px]"
-        >
-          {services_content.services_list.map((service, index) => (
-            <Container
-              key={index}
-              className="min-w-[360px] cursor-pointer relative group w-full min-h-[253px] rounded-[19px] py-9 flex flex-col items-center justify-center text-center gap-y-2 overflow-hidden"
+        <ul className="grid gap-5 md:grid-cols-2 lg:grid-cols-3 lg:gap-7">
+          {services_content.services_list.map((service) => (
+            <li
+              key={service.title}
+              data-reveal
+              className="group gradient-border glass-card relative flex flex-col items-center gap-3 overflow-hidden rounded-[20px] px-8 py-9 text-center [--border-opacity:0.3] hover:[--border-opacity:1] paged:py-[clamp(1.5rem,4vh,2.5rem)]"
             >
-              <Container className="basic-container absolute inset-0 box"></Container>
-              {/* SVG Blur Background */}
-              <div className="absolute bottom-0 flex justify-center items-center pointer-events-none z-50">
-                <Image
-                  src={rocketBg.src}
-                  alt="Rocket background"
-                  width={360}
-                  height={253}
-                  style={{
-                    width: "350px",
-                    height: "333px",
-                  }}
-                  className="opacity-0 group-hover:opacity-100 transition-all duration-500"
-                />
-              </div>
-
-              <Container className="basic-container bg-[#0E0224] py-0 absolute inset-[2px] rounded-[18px] z-20 px-8 lg:px-8 ">
-                <Container className="py-0 px-8 lg:px-8 absolute inset-0 flex flex-col items-center justify-center text-center gap-y-2 cards-gradient">
-                  <Image
-                    src={service.image}
-                    alt={service.title}
-                    width={100}
-                    height={100}
-                    className="w-[100px] h-[100px] object-cover mb-4 relative z-10"
-                  />
-                  <Typography
-                    type="title"
-                    size="medium"
-                    className="text-gradient-silver relative z-10"
-                  >
-                    {service.title}
-                  </Typography>
-                  <Typography
-                    type="sub"
-                    size="sub-desc"
-                    className="text-base-70 max-md:max-w-[296px] relative z-10"
-                  >
-                    {service.desc}
-                  </Typography>
-                </Container>
-              </Container>
-            </Container>
+              {/* Hover glow: opacity-only, rasterised once */}
+              <span
+                aria-hidden
+                className="brand-glow -bottom-1/2 left-1/2 h-full w-3/4 -translate-x-1/2 opacity-0 transition-opacity duration-500 group-hover:opacity-50"
+              />
+              <Image
+                src={service.image}
+                alt=""
+                width={88}
+                height={88}
+                className="relative h-[72px] w-[72px] object-contain transition-transform duration-500 ease-out-expo group-hover:-translate-y-1 lg:h-[88px] lg:w-[88px]"
+              />
+              <Typography as="h3" type="title" size="medium" className="text-gradient-silver relative">
+                {service.title}
+              </Typography>
+              <Typography type="sub" size="sub-desc" className="relative max-w-[300px] text-base-70">
+                {service.desc}
+              </Typography>
+            </li>
           ))}
-        </Container>
-      </motion.div>
+        </ul>
 
-      {/* Trusted by Animation */}
-      <motion.div
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: false, amount: 0.3 }}
-        variants={slideUpVariant2}
-      >
-        <Container className="trusted_by_wrapper basic-container mt-[90px]">
+        <div data-reveal className="grid gap-6">
           <Typography
+            as="h3"
             type="title"
             size="sub-desc"
-            className="text-gradient-silver relative z-10 text-center font-bold"
+            className="text-gradient-silver text-center font-bold tracking-[0.2em]"
           >
             {services_content.trusted_by}
           </Typography>
-          <Container className="basic-container flex mt-[37.95px]">
-            <Marquee speed={30} gradient={false} pauseOnHover={false}>
-              {services_content.trusting_companies.map((company, index) => (
-                <Image
-                  key={index}
-                  src={company.logo}
-                  alt={company.name}
-                  width={148}
-                  height={30}
-                  className="mx-[18px]"
-                />
-              ))}
-            </Marquee>
-          </Container>
-        </Container>
-      </motion.div>
-    </Container>
+          <div className="marquee">
+            <ul className="marquee-track">
+              {[0, 1].map((copy) =>
+                services_content.trusting_companies.map((company) => (
+                  <li key={`${copy}-${company.name}`} aria-hidden={copy === 1} className="shrink-0 px-[22px]">
+                    <Image
+                      src={company.logo}
+                      alt={copy === 0 ? company.name : ""}
+                      height={30}
+                      className="h-[30px] w-auto opacity-70 transition-opacity hover:opacity-100"
+                    />
+                  </li>
+                )),
+              )}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </Panel>
   );
 };

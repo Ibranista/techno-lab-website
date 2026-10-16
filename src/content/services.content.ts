@@ -1,7 +1,6 @@
 import rocketIcon from "@/assets/services/rocket.png";
 import terminalIcon from "@/assets/services/terminal.png";
 import joaquinIcon from "@/assets/services/joaquin.png";
-import logoIpsum from "@/assets/services/logoipsum.svg";
 
 import dahuaSeekLogo from "@/assets/services/logos/dahua-seeklogo.png";
 import digicomLogo from "@/assets/services/logos/digicom.png";

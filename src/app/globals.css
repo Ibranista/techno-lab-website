@@ -1,245 +1,174 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-:root {
-  --border-opacity: 0;
-  /* Initially transparent */
-}
-
-.hover\:border-visible:hover {
-  --border-opacity: 1;
-  /* Fully visible on hover */
-}
-
-.panel:not(:first-child) {
-  visibility: hidden;
-}
-
-/* optional: ensures no flicker before JS */
-body.js-loaded .panel {
-  visibility: visible;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  /* :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  } */
-}
+/* Keep these media queries in sync with src/lib/paged.ts */
+@custom-variant paged (@media (min-width: 1024px) and (min-height: 680px) and (prefers-reduced-motion: no-preference));
+@custom-variant flow (@media not all and (min-width: 1024px) and (min-height: 680px) and (prefers-reduced-motion: no-preference));
 
 @theme {
-  /* Base Colors */
+  --color-ink: #0e0224;
+  --color-ink-raised: #150833;
   --color-base-25: #00000040;
-  --color-base-50: #FFFFFF80;
-  --color-base-70: #FFFFFFB2;
+  --color-base-50: #ffffff80;
   --color-base-65: rgba(255, 255, 255, 0.65);
-  /* Secondary Colors */
-  --color-secondary-main: #E46CAA;
+  --color-base-70: #ffffffb2;
+  --color-secondary-main: #e46caa;
+  --color-brand-purple: #8334b6;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@property --border-angle {
-  inherits: false;
-  initial-value: 0deg;
-  syntax: '<angle>';
-}
-
-
-@layer utilities {
-
+@layer base {
   html {
-    scroll-behavior: smooth;
+    background: var(--color-ink);
+    color: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
   }
 
   body {
-    background: #0E0224;
-    overflow-x: hidden;
+    background: var(--color-ink);
+    overflow-x: clip;
   }
 
-  .panel:not(:first-child) {
-    visibility: hidden
+  /* Paged mode: the scroller owns navigation, so the document never scrolls. */
+  @variant paged {
+    html,
+    body {
+      overflow: hidden;
+      overscroll-behavior: none;
+    }
+
+    /* Hide every panel but the first until GSAP takes over (prevents the
+       last panel in the DOM from flashing on top before hydration). */
+    [data-panel]:not(#home) {
+      visibility: hidden;
+    }
   }
 
-  body.js-loaded .panel {
-    visibility: visible;
+  :focus-visible {
+    outline: 2px solid var(--color-secondary-main);
+    outline-offset: 3px;
   }
+}
 
-  /* scroll class */
-  .scroll-triggering-absolute {
-    @apply absolute inset-0;
-    transform: translateY(100%);
-  }
-
-  .basic-container {
-    @apply px-0 lg:px-0 py-0;
-  }
-
-  .shadow-custom {
-    box-shadow: 4px 4px 0 #2F2F81;
-  }
-
-  .dark-text {
-    @apply dark:text-[#fafafa];
-  }
-
-  .rfm-marquee {
-    @apply -ml-[120px]
-  }
-
-  .dark-btn {
-    @apply dark:border-[#44447a] dark:hover:bg-[#2F2F81] dark:hover:text-[#fff] dark:hover:border-[#fff];
-  }
-
-  .primary {
-    @apply text-[#260464]
-  }
-
+@layer components {
   .btn-gradient {
-    background: linear-gradient(180.64deg, #E46CAA 10.89%, #8334B6 99.45%);
+    background: linear-gradient(180deg, #e46caa 10%, #8334b6 100%);
   }
-
-  .cards-gradient {
-    background: linear-gradient(115.47deg, rgba(217, 217, 217, 0.12) 0.57%, rgba(115, 115, 115, 0.12) 99.43%);
-  }
-
-  .services-card {
-    background: linear-gradient(115.47deg, #E46CAA 0.57%, #8334B6 99.43%, #B350B000);
-  }
-
-  /* gradients */
 
   .hero-title-gradient {
-    background: radial-gradient(58.64% 158.96% at 47.55% 50%, #DBDBDB 0%, #FFFFFF 9.17%, #FFFFFF 81.25%, #DBDBDB 100%);
+    background: radial-gradient(58.64% 158.96% at 47.55% 50%, #dbdbdb 0%, #fff 9%, #fff 81%, #dbdbdb 100%);
     -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
     background-clip: text;
     -webkit-text-fill-color: transparent;
   }
 
   .text-gradient-silver {
-    background: linear-gradient(62.64deg, #DBDBDB 17.17%, #FFFFFF 32.25%, #FFFFFF 71.39%, #DBDBDB 83.91%);
+    background: linear-gradient(62.64deg, #dbdbdb 17%, #fff 32%, #fff 71%, #dbdbdb 84%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
   }
 
   .text-shadow {
-    @apply text-white;
-    text-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
   }
 
-  .rocket-bg {
-    background: linear-gradient(180.64deg, #E46CAA 10.89%, #8334B6 99.45%);
-    opacity: 0;
-    transform: rotate(-30deg);
-    opacity: 0.5;
-    filter: blur(37px);
-    transition: all 0.5s ease 0.15s;
-  }
-
-  .group:hover .rocket-bg {
-    opacity: 0.5;
-  }
-
-  .group:hover {
-    animation: rotate 6s linear infinite;
-  }
-
-  .animate-border {
-    animation: border-rotate 5s linear infinite;
-  }
-
-  @keyframes rotate {
-    to {
-      --border-angle: 360deg;
-    }
-  }
-
-
-  .welcome-border-gradient {
-    border: 3px solid transparent;
-    /* 300px arc: 300/ (2 * PI * r) * 360deg, for r ~ 100px, arc ~ 172deg */
-    background: conic-gradient(from var(--border-angle, 0deg), #e46caa 0deg, #ff9800 172deg, transparent 172deg, transparent 360deg);
-    opacity: 0;
+  /* Soft brand glow. Replaces the old SVG backgrounds, which ran a 102px
+     gaussian blur + fractal-noise filter that the browser re-rasterised on
+     every panel transform. A masked gradient is rasterised once. */
+  .brand-glow {
     pointer-events: none;
-    border-radius: 0.75rem;
-    transition: opacity 0.5s;
-    --border-angle: 0deg;
-    animation: border-rotate 2s linear infinite;
+    position: absolute;
+    border-radius: 9999px;
+    background: linear-gradient(180deg, #e46caa 0%, #8334b6 100%);
+    mask-image: radial-gradient(closest-side, #000 15%, transparent 100%);
+    opacity: 0.75;
   }
 
-  .group:hover .welcome-border-gradient {
-    opacity: 1;
+  /* 1px gradient hairline border that works on any rounded element.
+     Control visibility with --border-opacity. */
+  .gradient-border {
+    position: relative;
+    isolation: isolate;
   }
 
-  @keyframes border-rotate {
-    to {
-      --border-angle: 360deg;
+  .gradient-border::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    padding: 1px;
+    border-radius: inherit;
+    background: linear-gradient(135deg, #e46caa 0%, #8334b6 40%, rgb(255 255 255 / 0.08) 75%);
+    mask:
+      linear-gradient(#000 0 0) content-box exclude,
+      linear-gradient(#000 0 0);
+    opacity: var(--border-opacity, 0.35);
+    transition: opacity 0.4s ease;
+  }
+
+  .glass-card {
+    background: linear-gradient(115deg, rgb(217 217 217 / 0.08) 0%, rgb(115 115 115 / 0.04) 100%);
+  }
+
+  /* Seamless logo marquee: the track holds the list twice and slides by
+     exactly half its width. Compositor-only, no JS. */
+  .marquee {
+    overflow: hidden;
+    mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+  }
+
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    animation: marquee 40s linear infinite;
+  }
+
+  .marquee:hover .marquee-track {
+    animation-play-state: paused;
+  }
+
+  /* Load-in for content that is visible on first paint (hero + navbar).
+     Pure CSS so it starts before hydration and never flashes. */
+  .animate-rise {
+    animation: rise 0.9s var(--ease-out-expo) both;
+    animation-delay: var(--delay, 0s);
+  }
+
+  .animate-fade {
+    animation: fade 1s ease both;
+    animation-delay: var(--delay, 0s);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-track,
+    .animate-rise,
+    .animate-fade {
+      animation: none;
     }
   }
-
 }
 
-/* Vector */
-/* Rectangle 1 */
-
-/* Rectangle 1 */
-
-/* Card.css */
-
-/* contact form */
-/* Rectangle 1 */
-
-/* position: absolute;
-left: 0%;
-right: 0%;
-top: 6.41%;
-bottom: 0%;
-
-background: linear-gradient(115.47deg, rgba(217, 217, 217, 0.25) 0.57%, rgba(115, 115, 115, 0.045) 99.43%);
-backdrop-filter: blur(2px); */
-/* Note: backdrop-filter has minimal browser support */
-/* border-radius: 30px; */
-/* .contacts-us-form {
-  background: linear-gradient(115.47deg, rgba(217, 217, 217, 0.25) 0.57%, rgba(115, 115, 115, 0.045) 99.43%);
-  backdrop-filter: blur(2px);
-  border-radius: 30px;
-} */
-
-/* contact-us gradient */
-.contact-us-bg-gradient {
-  background: linear-gradient(180.64deg, #E46CAA 10.89%, #8334B6 99.45%);
-  opacity: 0.9;
-  filter: blur(102px);
-  transform: rotate(-105deg);
-  position: absolute;
-  width: 1182px;
-  height: 510px;
-  right: calc(29.17% - 1182px/2 + 484px);
-  bottom: calc(50% - 510px/2 - 398.86px);
+@keyframes marquee {
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
 }
 
-
-/* ::-webkit-scrollbar {
-  display: None
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 28px, 0);
+  }
 }
 
-::-webkit-scrollbar-track {
-  display: none;
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
 }
-
-::-webkit-scrollbar-thumb {
-  display: none;
-} */
